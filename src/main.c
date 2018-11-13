@@ -5,12 +5,15 @@
 
 #define APP_NAME "RGalaga"
 #define MAX_STARS 256
+#define ESCAPE 27
 
 int windowWidth = 700;
 int windowHeight = 500;
 
 /* Callback functions declarations */
 static void renderScene(void);
+static void onKeyboard(unsigned char key, int x, int y);
+static void onReshape(int width, int height);
 
 int main(int argc, char **argv)
 {
@@ -25,6 +28,8 @@ int main(int argc, char **argv)
 
     /* Callback functions registration */
     glutDisplayFunc(renderScene);
+    glutKeyboardFunc(onKeyboard);
+    glutReshapeFunc(onReshape);
 
     /* OpenGL initialization */
     glClearColor(0, 0, 0, 0);
@@ -32,6 +37,22 @@ int main(int argc, char **argv)
     glutMainLoop();
 
     return 0;
+}
+
+static void onKeyboard(unsigned char key, int x, int y){
+    switch(key) {
+        case ESCAPE:
+            exit(0);
+            break;
+    }
+}
+
+static void onReshape(int width, int height){
+    glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(60, (float) width / height, 1, 10);
 }
 
 static void renderScene(void)
