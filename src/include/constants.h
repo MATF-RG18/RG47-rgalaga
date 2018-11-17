@@ -1,0 +1,12 @@
+#ifndef RG_CONSTANTS_H
+#define RG_CONSTANTS_H
+
+#define RG_APP_NAME "RGalaga"
+#define RG_MAX_STARS 256
+#define RG_ESCAPE 27
+#define RG_ARROW_LEFT 97
+#define RG_ARROW_RIGHT 100
+#define RG_INITIAL_WINDOW_WIDTH 700
+#define RG_INITIAL_WINDOW_HEIGHT 500
+
+#endif
