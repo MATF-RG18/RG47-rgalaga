@@ -10,5 +10,7 @@ void rgInitCallbacks();
 
 void rgInitWindow();
 
+void rgInitEnableOptions();
+
 #endif
 
