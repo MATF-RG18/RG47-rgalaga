@@ -1,0 +1,1 @@
+/usr/bin/cc  -O3 -DNDEBUG   CMakeFiles/glewinfo.dir/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/src/glewinfo.c.o  -o bin/glewinfo -rdynamic lib/libGLEW.so.2.1.0 -lSM -lICE -lX11 -lXext -lGLU -lGL -Wl,-rpath,/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/build/lib: 

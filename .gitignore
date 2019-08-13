@@ -35,3 +35,6 @@ galaga
 # swap files that might've been created by vim
 *.swp
 *.swo
+
+cmake-build-*
+.idea
