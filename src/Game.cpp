@@ -58,7 +58,7 @@ GLFWwindow* WindowInitialization()
     return window;
 }
 
-static void key_callback (GLFWwindow * window, int key, int scancode, int action, int mods) {
+static void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods) {
     auto *player = reinterpret_cast<Player *>(glfwGetWindowUserPointer(window));
     if (player)
         player->HandleKeyPress(key);
@@ -80,37 +80,38 @@ int main()
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
     {
+        VertexArray va;
+
+        VertexBuffer vb(player.GetGLPos(), 4 * 4 * sizeof(float));
+        IndexBuffer ib(player.GetGLInd(), 6);
+
+//        glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+//        glm::mat4 view = glm::mat4(1.0f);
+//        glm::mat4 model = glm::mat4(1.0f);
+//
+//        glm::mat4 mvp = projection * view * model;
+
+        VertexBufferLayout layout;
+        layout.AddFloat(2);
+        layout.AddFloat(2);
+
+        va.AddBuffer(vb, layout);
+
+        Shader shader("res/shaders/Basic.shader");
+        shader.Bind();
+        shader.SetUniformMat4f("u_MVP", player.GetMVP());
+
+        Texture texture(player.GetTex());
+        texture.Bind();
+        shader.SetUniform1i("u_Texture", 0);
+
+        Renderer renderer;
+
         do {
-            VertexArray va;
-
-            VertexBuffer vb(player.getGLPos(), 4 * 4 * sizeof(float));
-            IndexBuffer ib(player.getGLInd(), 6);
-
-            glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
-            glm::mat4 view = glm::mat4(1.0f);
-            glm::mat4 model = glm::mat4(1.0f);
-
-            glm::mat4 mvp = projection * view * model;
-
-            VertexBufferLayout layout;
-            layout.AddFloat(2);
-            layout.AddFloat(2);
-
-            va.AddBuffer(vb, layout);
-
-            Shader shader("res/shaders/Basic.shader");
-            shader.Bind();
-            shader.SetUniformMat4f("u_MVP", mvp);
-
-            Texture texture(player.getTex());
-            texture.Bind();
-            shader.SetUniform1i("u_Texture", 0);
-
-            Renderer renderer;
-
             renderer.Clear();
 
             shader.Bind();
+            shader.SetUniformMat4f("u_MVP", player.GetMVP());
 
             renderer.Draw(va, ib, shader);
 
@@ -121,7 +122,7 @@ int main()
 
             glfwPollEvents();
 
-            glfwSetKeyCallback(window, key_callback);
+            glfwSetKeyCallback(window, KeyCallback);
 
         } // Check if the ESC key was pressed or the window was closed
         while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
