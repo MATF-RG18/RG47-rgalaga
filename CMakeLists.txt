@@ -14,6 +14,7 @@ add_executable(RGalaga
         ${PROJECT_SOURCE_DIR}/src/VertexBuffer.cpp
         ${PROJECT_SOURCE_DIR}/src/Spacecraft.cpp
         ${PROJECT_SOURCE_DIR}/src/Player.cpp
+        ${PROJECT_SOURCE_DIR}/src/Enemy.cpp
         ${PROJECT_SOURCE_DIR}/src/vendor/stb_image/stb_image.cpp
 )
 

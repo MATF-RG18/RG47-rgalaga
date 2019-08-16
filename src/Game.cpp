@@ -15,6 +15,18 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+
+void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+{
+    GLCall(glViewport(0, 0, width, height));
+}
+
+static void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods) {
+    auto *player = reinterpret_cast<Player *>(glfwGetWindowUserPointer(window));
+    if (player)
+        player->HandleKeyPress(key);
+}
+
 GLFWwindow* WindowInitialization()
 {
     // Initialize GLFW
@@ -33,24 +45,24 @@ GLFWwindow* WindowInitialization()
     // Create a window and OpenGL context
     GLFWwindow* window = glfwCreateWindow(800, 600, "RGalaga", nullptr, nullptr);
     if( window == nullptr){
-        fprintf(stderr, "Failed to create GLFW window.\n");
-        getchar();
+        std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return nullptr;
-
     }
     glfwMakeContextCurrent(window);
 
     // Initialize GLEW
     glewExperimental = (GLboolean) true; // Ensures that all extensions with valid entry points will be exposed
     if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        getchar();
+        std::cerr << "Failed to initialize GLEW" << std::endl;
         glfwTerminate();
         return nullptr;
     }
 
     std::cout << "Using GL Version: " << glGetString(GL_VERSION) << std::endl;
+
+    GLCall(glViewport(0, 0, 800, 600));
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 
     // Ensure capturing the pressing of ESC key
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -58,11 +70,6 @@ GLFWwindow* WindowInitialization()
     return window;
 }
 
-static void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods) {
-    auto *player = reinterpret_cast<Player *>(glfwGetWindowUserPointer(window));
-    if (player)
-        player->HandleKeyPress(key);
-}
 
 int main()
 {
@@ -75,6 +82,7 @@ int main()
     //  -Fix game loop
 
     Player player(400, 25, 1, "res/textures/spacecraft.png", 0, 50, 50, window);
+    Player enemy(200, 25, 1, "res/textures/enemy-type-01.png", 0, 30, 30, window);
 
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -116,13 +124,11 @@ int main()
             renderer.Draw(va, ib, shader);
 
             glfwSetWindowUserPointer(window, &player);
-
-            glfwSwapBuffers(window);
-            glfwSwapInterval(1);
+            glfwSetKeyCallback(window, KeyCallback);
 
             glfwPollEvents();
-
-            glfwSetKeyCallback(window, KeyCallback);
+            glfwSwapBuffers(window);
+            glfwSwapInterval(1);
 
         } // Check if the ESC key was pressed or the window was closed
         while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
