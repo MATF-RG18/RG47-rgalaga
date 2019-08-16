@@ -34,7 +34,7 @@ class VertexBufferLayout
 
         void AddFloat(unsigned int count) { Push(GL_FLOAT, count, GL_FALSE); }
 
-        inline const std::vector<VertexBufferElement> GetElements() const { return m_Elements; };
+        inline const std::vector<VertexBufferElement>& GetElements() const { return m_Elements; };
         inline unsigned int GetStride() const { return m_Stride; };
 
     private:
