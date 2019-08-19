@@ -5,7 +5,7 @@ project(RGalaga)
 set (CMAKE_CXX_STANDARD 11)
 
 add_executable(RGalaga
-        ${PROJECT_SOURCE_DIR}/src/Game.cpp
+        ${PROJECT_SOURCE_DIR}/src/Application.cpp
         ${PROJECT_SOURCE_DIR}/src/IndexBuffer.cpp
         ${PROJECT_SOURCE_DIR}/src/Renderer.cpp
         ${PROJECT_SOURCE_DIR}/src/Shader.cpp
@@ -15,6 +15,7 @@ add_executable(RGalaga
         ${PROJECT_SOURCE_DIR}/src/Spacecraft.cpp
         ${PROJECT_SOURCE_DIR}/src/Player.cpp
         ${PROJECT_SOURCE_DIR}/src/Enemy.cpp
+        ${PROJECT_SOURCE_DIR}/src/Game.cpp
         ${PROJECT_SOURCE_DIR}/src/vendor/stb_image/stb_image.cpp
 )
 
