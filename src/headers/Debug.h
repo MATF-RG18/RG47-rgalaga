@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 #include <stdint.h>
@@ -8,6 +9,7 @@
 
 #define RG_ASSERT(x) if (!(x)) assert(false)
 #define RG_INT2VOIDP(i) (void*)(uintptr_t)(i)
+
 
 void inline GLClearError()
 {
@@ -59,3 +61,4 @@ bool inline GLCheckError()
 #else
 #define GLCall(x) x
 #endif
+

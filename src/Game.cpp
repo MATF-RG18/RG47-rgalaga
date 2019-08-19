@@ -1,142 +1,140 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
-#include "Renderer.h"
-#include "Texture.h"
-#include "Spacecraft.h"
-#include "Player.h"
+#include "Game.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 
-void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
+    : m_State(GAME_ACTIVE), m_Keys(), m_Width(width), m_Height(height), m_Window(window),
+      m_Player(Player(0, 0, 1, "res/textures/spacecraft.png", 0, 50, 50, window)),
+      m_Projection(glm::ortho( 0.0f, static_cast<float>(m_Width),
+                               0.0f, static_cast<float>(m_Height),
+                               -1.0f, 1.0f)),
+      m_View(glm::mat4(1.0f))
 {
-    GLCall(glViewport(0, 0, width, height));
+    // Add the pointer to Game so the Game's methods could be called from ProcessInput
+//    glfwSetWindowUserPointer(window, this);
 }
 
-static void KeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods) {
+Game::~Game()
+{
+
+}
+
+void Game::Init()
+{
+
+}
+
+void Game::Update(GLfloat dt)
+{
+
+}
+
+void Game::KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     auto *player = reinterpret_cast<Player *>(glfwGetWindowUserPointer(window));
     if (player)
         player->HandleKeyPress(key);
 }
 
-GLFWwindow* WindowInitialization()
+void Game::ProcessInput(GLfloat dt)
 {
-    // Initialize GLFW
-    if(!glfwInit())
-    {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
-        getchar();
-        return nullptr;
-    }
 
-    glfwWindowHint(GLFW_SAMPLES, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // Create a window and OpenGL context
-    GLFWwindow* window = glfwCreateWindow(800, 600, "RGalaga", nullptr, nullptr);
-    if( window == nullptr){
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return nullptr;
-    }
-    glfwMakeContextCurrent(window);
-
-    // Initialize GLEW
-    glewExperimental = (GLboolean) true; // Ensures that all extensions with valid entry points will be exposed
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW" << std::endl;
-        glfwTerminate();
-        return nullptr;
-    }
-
-    std::cout << "Using GL Version: " << glGetString(GL_VERSION) << std::endl;
-
-    GLCall(glViewport(0, 0, 800, 600));
-    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
-
-    // Ensure capturing the pressing of ESC key
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
-    return window;
 }
 
-
-int main()
+void Game::AddShader(const Shader *shader, const std::string& name)
 {
-    GLFWwindow* window = WindowInitialization();
-    if (!window)
-        return -1;
+    m_Shaders[name] = *shader;
+}
 
-    // TODO:
-    //  -Change hardcoded values
-    //  -Fix game loop
+Shader Game::GetShader(const std::string& name)
+{
+    return m_Shaders[name];
+}
 
-    Player player(400, 25, 1, "res/textures/spacecraft.png", 0, 50, 50, window);
-    Player enemy(200, 25, 1, "res/textures/enemy-type-01.png", 0, 30, 30, window);
+void Game::AddTexture(const Texture *texture, const std::string& name)
+{
+    m_Textures[name] = *texture;
+}
 
-    GLCall(glEnable(GL_BLEND));
-    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+Texture Game::GetTexture(const std::string& name)
+{
+    return m_Textures[name];
+}
 
-    {
-        VertexArray va;
+void Game::LoadShader(const std::string& path, const std::string& name)
+{
+    Shader *shader = new Shader(path);
+    AddShader(shader, name);
+}
 
-        VertexBuffer vb(player.GetGLPos(), 4 * 4 * sizeof(float));
-        IndexBuffer ib(player.GetGLInd(), 6);
+void Game::LoadTexture(const std::string& path, const std::string& name, unsigned int slot)
+{
+    Texture *texture = new Texture(path);
+    AddTexture(texture, name);
+//    m_Textures[name].Bind(slot);
+}
 
-//        glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
-//        glm::mat4 view = glm::mat4(1.0f);
-//        glm::mat4 model = glm::mat4(1.0f);
-//
-//        glm::mat4 mvp = projection * view * model;
+void Game::GameLoop()
+{
+    LoadShader("res/shaders/Basic.shader", "basic");
 
-        VertexBufferLayout layout;
-        layout.AddFloat(2);
-        layout.AddFloat(2);
+    LoadTexture(m_Player.GetTex(), "player", 0);
+    LoadTexture("res/textures/enemy-type-01.png", "enemy_01", 0);
+    LoadTexture("res/textures/enemy-type-02.png", "enemy_02", 0);
+    LoadTexture("res/textures/enemy-type-03.png", "enemy_03", 0);
+    LoadTexture("res/textures/enemy-type-04.png", "enemy_04", 0);
+    LoadTexture("res/textures/enemy-type-05.png", "enemy_05", 0);
 
-        va.AddBuffer(vb, layout);
+    GetShader("basic").SetUniform1i("u_Texture", 0);
 
-        Shader shader("res/shaders/Basic.shader");
-        shader.Bind();
-        shader.SetUniformMat4f("u_MVP", player.GetMVP());
+    Renderer renderer;
 
-        Texture texture(player.GetTex());
-        texture.Bind();
-        shader.SetUniform1i("u_Texture", 0);
+    VertexArray va;
 
-        Renderer renderer;
+    VertexBuffer vb(m_Player.GetGLPos(), 4 * 4 * sizeof(float));
+    IndexBuffer ib(m_Player.GetGLInd(), 6);
 
-        do {
-            renderer.Clear();
+    VertexBufferLayout layout;
+    layout.AddFloat(2);
+    layout.AddFloat(2);
 
-            shader.Bind();
-            shader.SetUniformMat4f("u_MVP", player.GetMVP());
+    va.AddBuffer(vb, layout);
 
-            renderer.Draw(va, ib, shader);
+    glm::vec3 translationA(400,  30, 0);
+    glm::vec3 translationB(400, 130, 0);
+    glm::mat4 model;
+    glm::mat4 mvp;
+    do {
+        renderer.Clear();
 
-            glfwSetWindowUserPointer(window, &player);
-            glfwSetKeyCallback(window, KeyCallback);
+        GetShader("basic").Bind();
+        model = glm::translate(glm::mat4(1.0f), translationA);
+        mvp = m_Projection * m_View * model;
+        GetShader("basic").SetUniformMat4f("u_MVP", mvp);
+        renderer.Draw(va, ib, GetShader("basic"));
 
-            glfwPollEvents();
-            glfwSwapBuffers(window);
-            glfwSwapInterval(1);
+        GetShader("basic").Bind();
+        model = glm::translate(glm::mat4(1.0f), translationB);
+        mvp = m_Projection * m_View * model;
+        GetShader("basic").SetUniformMat4f("u_MVP", mvp);
+        renderer.Draw(va, ib, GetShader("basic"));
 
-        } // Check if the ESC key was pressed or the window was closed
-        while(glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-              glfwWindowShouldClose(window) == 0);
-    }
+        glfwSetWindowUserPointer(m_Window, &m_Player);
 
-    // Close OpenGL window and terminate GLFW
-    glfwTerminate();
+        glfwSwapBuffers(m_Window);
+        glfwSwapInterval(1);
 
-    return 0;
+        glfwPollEvents();
+
+        glfwSetKeyCallback(m_Window, KeyCallback);
+
+    } // Check if the ESC key was pressed or the window was closed
+    while(glfwGetKey(m_Window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+          glfwWindowShouldClose(m_Window) == 0);
+}
+
+void Game::SetState(GameState state)
+{
+    m_State = state;
 }

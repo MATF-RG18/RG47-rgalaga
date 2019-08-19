@@ -2,7 +2,7 @@
 #include "Debug.h"
 
 IndexBuffer::IndexBuffer(const unsigned int* indices, unsigned int count)
-  : m_Count(count)
+    : m_Count(count)
 {
     RG_ASSERT(sizeof(unsigned int) == sizeof(GLuint));
 

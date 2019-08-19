@@ -4,7 +4,6 @@
 #include <unordered_map>
 
 #include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 struct ShaderProgramSource
 {
@@ -20,6 +19,7 @@ class Shader
         std::unordered_map<std::string, int> m_UniformLocationCache;
 
     public:
+        Shader() { }
         Shader(const std::string& filepath);
         ~Shader();
 

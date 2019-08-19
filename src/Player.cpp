@@ -1,5 +1,8 @@
 #include "Player.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 
 Player::Player(float x, float y, float z, const std::string &path,
     float angle, float width, float height, GLFWwindow *window)

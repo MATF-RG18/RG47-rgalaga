@@ -1,10 +1,8 @@
 #pragma once
 
-
-#include <algorithm>
-
+#include "Debug.h"
 #include "Spacecraft.h"
-#include "Renderer.h"
+
 
 class Player : public Spacecraft
 {
@@ -13,11 +11,10 @@ class Player : public Spacecraft
 
     public:
         Player(float x, float y, float z, const std::string& path,
-            float angle, float width, float height, GLFWwindow *window);
+               float angle, float width, float height, GLFWwindow *window);
         virtual ~Player();
 
-        void Move(const float x, const float y, const float z) override;
+        void Move(const float x, const float y, const float z);
 
         void HandleKeyPress(int key);
 };
-
