@@ -17,10 +17,14 @@ Player::~Player()
 
 }
 
+void Player::StartMoving(int key, int action)
+{
+
+}
+
 void Player::Move(const float x, const float y, const float z, const float angle)
 {
     // Update Player position with args
-
     // If the Player hit the leftmost/rightmost/uppermost/downmost pixel of window,
     // prevent moving further left/right/up/down by leaving changePosition false
     bool changePosition = false;
@@ -39,17 +43,26 @@ void Player::Move(const float x, const float y, const float z, const float angle
 //              << ", right: " << m_pos.x + m_width/2 << std::endl;
 }
 
-void Player::HandleKeyPress(int key)
+void Player::HandleKeyPress(int key, int action)
 {
-    switch(key) {
-        case GLFW_KEY_LEFT :
-            this->Move(-m_step, 0, 0, 0);
-            break;
-        case GLFW_KEY_RIGHT :
-            Move(m_step, 0, 0, 0);
-            break;
-        default:
-            break;
+    if (action == GLFW_PRESS || action == GLFW_REPEAT)
+    {
+        m_Velocity += 0.5f;
+        switch (key)
+        {
+            case GLFW_KEY_LEFT :
+                this->Move(-(m_step + m_Velocity), 0, 0, 0);
+                break;
+            case GLFW_KEY_RIGHT :
+                Move(m_step + m_Velocity, 0, 0, 0);
+                break;
+            default:
+                break;
+        }
+    }
+    else if (action == GLFW_RELEASE)
+    {
+        m_Velocity = 0;
     }
 
 //    std::cout << "Key pressed code: " << key << std::endl;

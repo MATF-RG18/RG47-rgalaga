@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "GameLevel.h"
 
 #include <map>
 #include <string>
@@ -42,7 +43,12 @@ private:
     // Game objects
     Player m_Player;
 
+    unsigned int m_ActiveLevel;
+    std::vector<GameLevel> m_Levels;
+    int m_NumberOfEnemyTypes;
+
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+
 public:
     Game(unsigned int width, unsigned int height, GLFWwindow *window);
     ~Game();
@@ -59,9 +65,12 @@ public:
 
     void LoadTexture(const std::string& path, const std::string& name, unsigned int slot);
     void LoadShader(const std::string& path, const std::string& name);
+    void LoadLevels();
+    void LoadGameObjects();
+    void BindActiveLevelTexture();
+    unsigned int GetActiveLevel();
 
     // GameLoop
-    void ProcessInput(GLfloat dt);
     void Update(GLfloat dt);
     void GameLoop();
 };

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(RGalaga)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 add_executable(RGalaga
         ${PROJECT_SOURCE_DIR}/src/Application.cpp
@@ -16,6 +16,7 @@ add_executable(RGalaga
         ${PROJECT_SOURCE_DIR}/src/Player.cpp
         ${PROJECT_SOURCE_DIR}/src/Enemy.cpp
         ${PROJECT_SOURCE_DIR}/src/Game.cpp
+        ${PROJECT_SOURCE_DIR}/src/GameLevel.cpp
         ${PROJECT_SOURCE_DIR}/src/vendor/stb_image/stb_image.cpp
 )
 
