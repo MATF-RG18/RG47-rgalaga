@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Player.h"
+#include "Enemy.h"
 
 #include <map>
 #include <string>

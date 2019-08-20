@@ -6,14 +6,13 @@
 
 Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
     : m_State(GAME_ACTIVE), m_Keys(), m_Width(width), m_Height(height), m_Window(window),
-      m_Player(Player(0, 0, 1, "res/textures/spacecraft.png", 0, 50, 50, window)),
+      m_Player(400, 30, 1, "player", 0.0f, 50, 50, 2.0f, window),
       m_Projection(glm::ortho( 0.0f, static_cast<float>(m_Width),
                                0.0f, static_cast<float>(m_Height),
-                               -1.0f, 1.0f)),
+                              -1.0f, 1.0f)),
       m_View(glm::mat4(1.0f))
 {
-    // Add the pointer to Game so the Game's methods could be called from ProcessInput
-//    glfwSetWindowUserPointer(window, this);
+
 }
 
 Game::~Game()
@@ -79,21 +78,36 @@ void Game::GameLoop()
 {
     LoadShader("res/shaders/Basic.shader", "basic");
 
-    LoadTexture(m_Player.GetTex(), "player", 0);
+    LoadTexture("res/textures/spacecraft.png", "player", 0);
     LoadTexture("res/textures/enemy-type-01.png", "enemy_01", 0);
     LoadTexture("res/textures/enemy-type-02.png", "enemy_02", 0);
     LoadTexture("res/textures/enemy-type-03.png", "enemy_03", 0);
     LoadTexture("res/textures/enemy-type-04.png", "enemy_04", 0);
     LoadTexture("res/textures/enemy-type-05.png", "enemy_05", 0);
-
+    m_Textures["enemy_03"].Bind();
     GetShader("basic").SetUniform1i("u_Texture", 0);
+
+    Enemy enemy(0, 0, 1, "enemy_01", 0, 20, 20, 2.0f);
 
     Renderer renderer;
 
     VertexArray va;
 
-    VertexBuffer vb(m_Player.GetGLPos(), 4 * 4 * sizeof(float));
-    IndexBuffer ib(m_Player.GetGLInd(), 6);
+    float vertices[] = {
+        // Pos        // Tex
+        -0.5f, -0.5f, 0.0f, 0.0f,
+         0.5f, -0.5f, 1.0f, 0.0f,
+         0.5f,  0.5f, 1.0f, 1.0f,
+        -0.5f,  0.5f, 0.0f, 1.0f,
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    VertexBuffer vb(vertices, 4 * 4 * sizeof(float));
+    IndexBuffer ib(indices, 6);
 
     VertexBufferLayout layout;
     layout.AddFloat(2);
@@ -101,23 +115,18 @@ void Game::GameLoop()
 
     va.AddBuffer(vb, layout);
 
-    glm::vec3 translationA(400,  30, 0);
-    glm::vec3 translationB(400, 130, 0);
-    glm::mat4 model;
-    glm::mat4 mvp;
     do {
         renderer.Clear();
 
         GetShader("basic").Bind();
-        model = glm::translate(glm::mat4(1.0f), translationA);
-        mvp = m_Projection * m_View * model;
-        GetShader("basic").SetUniformMat4f("u_MVP", mvp);
+        m_Textures["player"].Bind();
+        GetShader("basic").SetUniformMat4f("u_MVP", m_Player.GetMVP());
         renderer.Draw(va, ib, GetShader("basic"));
 
         GetShader("basic").Bind();
-        model = glm::translate(glm::mat4(1.0f), translationB);
-        mvp = m_Projection * m_View * model;
-        GetShader("basic").SetUniformMat4f("u_MVP", mvp);
+        enemy.Transform(glm::vec2(400, 550), glm::vec2(30, 30), 0.0f);
+        m_Textures[enemy.GetTex()].Bind();
+        GetShader("basic").SetUniformMat4f("u_MVP", enemy.GetMVP());
         renderer.Draw(va, ib, GetShader("basic"));
 
         glfwSetWindowUserPointer(m_Window, &m_Player);
