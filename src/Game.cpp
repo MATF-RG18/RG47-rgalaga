@@ -48,7 +48,8 @@ Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
       m_ActiveLevel(1),
       m_NumberOfEnemyTypes(6)
 {
-
+    LoadGameObjects();
+    LoadLevels();
 }
 
 Game::~Game()
@@ -137,6 +138,7 @@ void Game::LoadGameObjects()
     for (int i = 0; i < m_NumberOfEnemyTypes; i++)
         LoadTexture("res/textures/enemy-type-" + std::to_string(i + 1) + ".png",
                     "enemy_" + std::to_string(i + 1), 0);
+    LoadTexture("res/textures/missile.png", "missile", 0);
 }
 
 unsigned int Game::GetActiveLevel()
@@ -147,8 +149,8 @@ unsigned int Game::GetActiveLevel()
 void Game::GameLoop()
 {
     LoadShader(SHADER_LOCATION, "basic");
-    LoadGameObjects();
-    LoadLevels();
+//    LoadGameObjects();
+//    LoadLevels();
 
     GetShader("basic").SetUniform1i("u_Texture", 0);
 

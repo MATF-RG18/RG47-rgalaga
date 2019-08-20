@@ -6,18 +6,13 @@
 
 Player::Player(float x, float y, float z, std::string texName, float angle,
                float width, float height, float step, GLFWwindow *window)
-    : Spacecraft(x, y, z, texName, angle, width, height, step)
+    : GameObject(x, y, z, texName, angle, width, height, step)
 {
     // Add the pointer to Player so the Player's methods could be called from KeyCallback in Game.cpp
     glfwSetWindowUserPointer(window, this);
 }
 
 Player::~Player()
-{
-
-}
-
-void Player::StartMoving(int key, int action)
 {
 
 }
@@ -47,7 +42,7 @@ void Player::HandleKeyPress(int key, int action)
 {
     if (action == GLFW_PRESS || action == GLFW_REPEAT)
     {
-        m_Velocity += 0.5f;
+        m_Velocity += 1.0f;
         switch (key)
         {
             case GLFW_KEY_LEFT :

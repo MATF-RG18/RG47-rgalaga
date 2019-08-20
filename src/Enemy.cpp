@@ -6,7 +6,7 @@
 
 Enemy::Enemy(float x, float y, float z, std::string texName,
                float angle, float width, float height, float step)
-    : Spacecraft(x, y, z, texName, angle, width, height, step)
+    : GameObject(x, y, z, texName, angle, width, height, step)
 {
 
 }

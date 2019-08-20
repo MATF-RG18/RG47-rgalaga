@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Debug.h"
-#include "Spacecraft.h"
+#include "GameObject.h"
 
 
-class Player : public Spacecraft
+class Player : public GameObject
 {
     private:
         float m_Velocity;
@@ -14,7 +14,6 @@ class Player : public Spacecraft
                float angle, float width, float height, float step, GLFWwindow *window);
         virtual ~Player();
 
-        void StartMoving(int key, int action);
         void Move(const float x, const float y, const float z, const float angle) override;
 
         void HandleKeyPress(int key, int action);

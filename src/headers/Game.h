@@ -43,6 +43,7 @@ private:
     // Game objects
     Player m_Player;
 
+
     unsigned int m_ActiveLevel;
     std::vector<GameLevel> m_Levels;
     int m_NumberOfEnemyTypes;

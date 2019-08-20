@@ -12,11 +12,12 @@ add_executable(RGalaga
         ${PROJECT_SOURCE_DIR}/src/Texture.cpp
         ${PROJECT_SOURCE_DIR}/src/VertexArray.cpp
         ${PROJECT_SOURCE_DIR}/src/VertexBuffer.cpp
-        ${PROJECT_SOURCE_DIR}/src/Spacecraft.cpp
+        ${PROJECT_SOURCE_DIR}/src/GameObject.cpp
         ${PROJECT_SOURCE_DIR}/src/Player.cpp
         ${PROJECT_SOURCE_DIR}/src/Enemy.cpp
         ${PROJECT_SOURCE_DIR}/src/Game.cpp
         ${PROJECT_SOURCE_DIR}/src/GameLevel.cpp
+        ${PROJECT_SOURCE_DIR}/src/Missile.cpp
         ${PROJECT_SOURCE_DIR}/src/vendor/stb_image/stb_image.cpp
 )
 

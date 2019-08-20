@@ -1,7 +1,7 @@
-#include "Spacecraft.h"
+#include "GameObject.h"
 
 
-Spacecraft::Spacecraft(float x, float y, float z, std::string texName, float angle,
+GameObject::GameObject(float x, float y, float z, std::string texName, float angle,
                        float width, float height, float step)
     : m_pos{ x, y, z }, m_tex(texName), m_angle(angle),
       m_width(width), m_height(height),
@@ -13,32 +13,32 @@ Spacecraft::Spacecraft(float x, float y, float z, std::string texName, float ang
     Transform(glm::vec2(x, y), glm::vec2(width, height), angle);
 }
 
-Spacecraft::~Spacecraft()
+GameObject::~GameObject()
 {
 
 }
 
-void Spacecraft::SetPosition(const float x, const float y, const float z)
+void GameObject::SetPosition(const float x, const float y, const float z)
 {
 
 }
 
-void Spacecraft::Move(const float x, const float y, const float z, const float angle)
+void GameObject::Move(const float x, const float y, const float z, const float angle)
 {
 
 }
 
-void Spacecraft::UpdatePos(const Position &pos)
+void GameObject::UpdatePos(const Position &pos)
 {
 
 }
 
-void Spacecraft::UpdateAngle(const float a)
+void GameObject::UpdateAngle(const float a)
 {
 
 }
 
-void Spacecraft::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
+void GameObject::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
 {
     // First translate (transformations are: scale happens first, then rotation
     // and then final translation happens; reversed order)

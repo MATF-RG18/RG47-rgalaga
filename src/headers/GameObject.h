@@ -28,7 +28,7 @@ struct Position
 };
 
 
-class Spacecraft
+class GameObject
 {
     protected:
         Position m_pos;
@@ -43,9 +43,9 @@ class Spacecraft
         glm::mat4 m_mvp;
 
     public:
-        Spacecraft(float x, float y, float z, std::string texName, float angle,
+        GameObject(float x, float y, float z, std::string texName, float angle,
                    float width, float height, float step);
-        virtual ~Spacecraft();
+        virtual ~GameObject();
 
         inline const Position& GetPos() const        { return m_pos; }
         inline const std::string& GetTex() const     { return m_tex; }

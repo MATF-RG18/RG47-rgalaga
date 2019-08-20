@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Debug.h"
-#include "Spacecraft.h"
+#include "GameObject.h"
 
 
-class Enemy : public Spacecraft
+class Enemy : public GameObject
 {
 private:
     float m_step;
