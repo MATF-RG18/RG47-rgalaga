@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "GameLevel.h"
+#include "Missile.h"
 
 #include <map>
 #include <string>
@@ -30,6 +31,8 @@ private:
     GameState m_State;
     bool m_Keys[1024];
     unsigned int m_Width, m_Height;
+    unsigned int m_RowsEnemiesCount;
+    unsigned int m_ColsEnemiesCount;
 
     // OpenGL
     std::map<std::string, Shader> m_Shaders;
@@ -40,16 +43,19 @@ private:
     glm::mat4 m_View;
 
     GLFWwindow *m_Window;
+
     // Game objects
     Player m_Player;
-
+    std::vector<Enemy> m_Enemies;
+    static std::vector<Missile> PlayerMissiles;
+    static std::vector<Missile> EnemyMissiles;
 
     unsigned int m_ActiveLevel;
     std::vector<GameLevel> m_Levels;
     int m_NumberOfEnemyTypes;
 
     static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-
+    static void MissileLaunch(const GameObject& launcher);
 public:
     Game(unsigned int width, unsigned int height, GLFWwindow *window);
     ~Game();
@@ -70,8 +76,10 @@ public:
     void LoadGameObjects();
     void BindActiveLevelTexture();
     unsigned int GetActiveLevel();
+    void SetEnemies();
+
 
     // GameLoop
-    void Update(GLfloat dt);
+    void Update();
     void GameLoop();
 };

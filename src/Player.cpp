@@ -8,8 +8,9 @@ Player::Player(float x, float y, float z, std::string texName, float angle,
                float width, float height, float step, GLFWwindow *window)
     : GameObject(x, y, z, texName, angle, width, height, step)
 {
+//    m_MissileSpeed = 5.0f;
     // Add the pointer to Player so the Player's methods could be called from KeyCallback in Game.cpp
-    glfwSetWindowUserPointer(window, this);
+//    glfwSetWindowUserPointer(window, this);
 }
 
 Player::~Player()
@@ -17,50 +18,36 @@ Player::~Player()
 
 }
 
-void Player::Move(const float x, const float y, const float z, const float angle)
+void Player::Move(int direction)
 {
     // Update Player position with args
-    // If the Player hit the leftmost/rightmost/uppermost/downmost pixel of window,
-    // prevent moving further left/right/up/down by leaving changePosition false
+    // If the Player hit the leftmost/rightmost pixel of window,
+    // prevent moving further left/right by leaving changePosition false
+//    std::cout << "here i am" << std::endl;
+    auto move = direction * (m_step + m_Velocity);
+
+//    std::cout << move << std::endl;
     bool changePosition = false;
-    if ( !((m_pos.x + m_width / 2 + x) >=  800 || (m_pos.x - m_width / 2 + x)  <= 0) &&
-         !((m_pos.y + m_height / 2 + y) >= 600 || (m_pos.y - m_height / 2 + y) <= 0))
+
+    if ( !((m_pos.x + m_width / 2 + move) >=  800 || (m_pos.x - m_width / 2 + move)  <= 0))
     {
-        m_pos.x += x;
-        m_pos.y += y;
+        m_pos.x += move;
         changePosition = true;
     }
 
     if (changePosition)
-        Transform(glm::vec2(m_pos.x, m_pos.y), glm::vec2(m_width, m_height), angle);
+        Transform(glm::vec2(m_pos.x, m_pos.y), glm::vec2(m_width, m_height), 0.0f);
 
+    m_Velocity++;
 //    std::cout << "Moved to (" << m_pos.x << ", " << m_pos.y << ") - left: " << m_pos.x - m_width/2
 //              << ", right: " << m_pos.x + m_width/2 << std::endl;
+
+
 }
 
-void Player::HandleKeyPress(int key, int action)
+Missile Player::MissileLaunch()
 {
-    if (action == GLFW_PRESS || action == GLFW_REPEAT)
-    {
-        m_Velocity += 1.0f;
-        switch (key)
-        {
-            case GLFW_KEY_LEFT :
-                this->Move(-(m_step + m_Velocity), 0, 0, 0);
-                break;
-            case GLFW_KEY_RIGHT :
-                Move(m_step + m_Velocity, 0, 0, 0);
-                break;
-            default:
-                break;
-        }
-    }
-    else if (action == GLFW_RELEASE)
-    {
-        m_Velocity = 0;
-    }
-
-//    std::cout << "Key pressed code: " << key << std::endl;
-//    std::cout << "Left code: " << GLFW_KEY_LEFT << std::endl;
-//    std::cout << "Right code: " << GLFW_KEY_RIGHT << std::endl;
+    Missile missile(m_pos.x, m_pos.y + m_height / 2, m_pos.z, "missile", 0.0f, 10.0f, 20.0f, 5.0f);
+    return missile;
 }
+

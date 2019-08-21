@@ -6,6 +6,16 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 
+enum LifeState {
+    DEAD = 0,
+    ALIVE = 1
+};
+
+enum Movement {
+    LEFT = -1,
+    RIGHT = 1
+};
+
 struct Position
 {
     float x, y, z;
@@ -36,6 +46,8 @@ class GameObject
         float m_angle; // Angle from the x-axis
         float m_width, m_height;
         float m_step;
+        LifeState m_State;
+        float m_ExplosionTime;
 
         glm::mat4 m_projection;
         glm::mat4 m_view;
@@ -47,15 +59,23 @@ class GameObject
                    float width, float height, float step);
         virtual ~GameObject();
 
-        inline const Position& GetPos() const        { return m_pos; }
-        inline const std::string& GetTex() const     { return m_tex; }
-        inline const float GetAngle() const          { return m_angle; }
-        inline const float GetHeight() const         { return m_height; }
-        inline const float GetWidth() const          { return m_width; }
-        inline const glm::mat4& GetMVP() const       { return m_mvp; }
+        inline const Position& GetPos() const         { return m_pos; }
+        inline const std::string& GetTex() const      { return m_tex; }
+        inline const float GetAngle() const           { return m_angle; }
+        inline const float GetHeight() const          { return m_height; }
+        inline const float GetWidth() const           { return m_width; }
+        inline const float GetStep() const            { return m_step; }
+        inline const glm::mat4& GetMVP() const        { return m_mvp; }
+        inline const float GetExplosionTime() const   { return m_ExplosionTime; }
+        inline bool IsAlive()                         { return m_State == LifeState::ALIVE; }
+
+        inline void SetTexture(const std::string& texName)      { m_tex = texName; }
+        inline void ExplosionTimeReduce(const float amount)     { m_ExplosionTime -= amount; }
+        inline void SetState(LifeState state)                   { m_State = state; }
 
         void SetPosition(const float x, const float y, const float z);
-        virtual void Move(const float x, const float y, const float z, const float angle);
+        virtual void Move(int direction);
+//        virtual void Move(const float x, const float y, const float z, const float angle);
         void UpdatePos(const Position& pos);
         void UpdateAngle(const float a);
 

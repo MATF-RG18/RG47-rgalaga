@@ -8,7 +8,9 @@ GameObject::GameObject(float x, float y, float z, std::string texName, float ang
       m_step(step),
       m_projection(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f)),
       m_view(glm::mat4(1.0f)),
-      m_model(glm::mat4(1.0f))
+      m_model(glm::mat4(1.0f)),
+      m_ExplosionTime(1.0f),
+      m_State(LifeState::ALIVE)
 {
     Transform(glm::vec2(x, y), glm::vec2(width, height), angle);
 }
@@ -23,7 +25,7 @@ void GameObject::SetPosition(const float x, const float y, const float z)
 
 }
 
-void GameObject::Move(const float x, const float y, const float z, const float angle)
+void GameObject::Move(int direction)
 {
 
 }
@@ -40,6 +42,14 @@ void GameObject::UpdateAngle(const float a)
 
 void GameObject::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
 {
+    m_pos.x = position[0];
+    m_pos.y = position[1];
+
+    m_width = size[0];
+    m_height = size[1];
+
+    m_angle = rotate;
+
     // First translate (transformations are: scale happens first, then rotation
     // and then final translation happens; reversed order)
     m_model = glm::translate(glm::mat4(1.0f), glm::vec3(position, 0.0f));

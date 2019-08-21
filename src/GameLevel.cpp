@@ -28,18 +28,18 @@ void GameLevel::ParseLevel(const std::string &levelPath)
 {
     std::ifstream stream("res/levels/" + levelPath);
     std::string line;
-    bool firstLine = true;
     while (getline(stream, line))
     {
         std::istringstream is(line);
+        if (line.empty()) break;
         m_Enemies.emplace_back(std::vector<int>(std::istream_iterator<int>(is), std::istream_iterator<int>()));
     }
     m_Background = "res/textures/level-" + levelPath.substr(0, levelPath.length() - 4) + "-background.png";
-    for (auto a : m_Enemies)
-    {
-        for (auto b : a)
-            std::cout << b;
-        std::cout << std::endl;
-    }
-    std::cout << m_Background << std::endl;
+//    for (auto a : m_Enemies)
+//    {
+//        for (auto b : a)
+//            std::cout << b;
+//        std::cout << std::endl;
+//    }
+//    std::cout << m_Background << std::endl;
 }
