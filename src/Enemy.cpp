@@ -3,9 +3,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-#include <ctime>
+#include <random>
 
-float Enemy::InitialShootingProbability;
 
 Enemy::Enemy(float x, float y, float z, std::string texName, std::string missileTexName,
              float angle, float width, float height, float step, float patrol)
@@ -15,11 +14,7 @@ Enemy::Enemy(float x, float y, float z, std::string texName, std::string missile
       m_PatrolMoveLength(patrol),
       m_MissileTexName(missileTexName)
 {
-    // Generate random number between 0.0 and 0.1, using coordinates x and y because that's where they differ mostly
-    std::srand(std::time(nullptr) + x + y);
-    m_ShootingProbability = static_cast <float> (std::rand()) / ( static_cast <float> (RAND_MAX/(0.1)));
-    Enemy::InitialShootingProbability = m_ShootingProbability;
-    m_CoolDownTime = 500;
+
 }
 
 Enemy::~Enemy()
@@ -50,16 +45,5 @@ Movement Enemy::GetDirection()
 Missile Enemy::MissileLaunch()
 {
     Missile missile(m_pos.x, m_pos.y - m_height / 2, m_pos.z, m_MissileTexName, 0.0f, 10.0f, 20.0f, 5.0f);
-    // Reset the probability for launching when missiled is launched
-    m_ShootingProbability = InitialShootingProbability;
     return missile;
-}
-
-bool Enemy::ToLaunch()
-{
-    std::srand(std::time(nullptr) + m_pos.x + m_pos.y);
-    auto prob = static_cast <float> (std::rand()) / ( static_cast <float> (RAND_MAX));
-    // There is greater probability for an enemy to shoot if he didn't launch for awhile
-    m_ShootingProbability += 0.001;
-    return prob <= m_ShootingProbability;
 }

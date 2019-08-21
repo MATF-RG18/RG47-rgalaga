@@ -11,7 +11,7 @@ class Player : public GameObject
         std::string m_MissileTexName;
     public:
         Player(float x, float y, float z, std::string texName, std::string missileTexName,
-               float angle, float width, float height, float step, GLFWwindow *window);
+               float angle, float width, float height, float step, float velocity, GLFWwindow *window);
         virtual ~Player();
 
         void Move(int direction) override;

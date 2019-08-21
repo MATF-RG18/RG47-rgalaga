@@ -6,19 +6,21 @@
 #include <dirent.h>
 #include <cstring>
 #include <cmath>
+#include <random>
 
 // Player details
 const float PLAYER_WIDTH = 50.0f;
 const float PLAYER_HEIGHT = 50.0f;
-const float PLAYER_STARTING_STEP = 1.0f;
+const float PLAYER_STARTING_STEP = 15.0f;
 const float PLAYER_STARTING_POSITION_X = 400.0f;
 const float PLAYER_STARTING_POSITION_Y = 30.0f;
 const float PLAYER_STARTING_POSITION_Z = 1.0f;
 const float PLAYER_STARTING_ANGLE = 0.0f;
+const float PLAYER_STARTING_VELOCITY = 2.0f;
 
 // Enemy details
-const float ENEMY_WIDTH = 40.0f;
-const float ENEMY_HEIGHT = 40.0f;
+const float ENEMY_WIDTH = 30.0f;
+const float ENEMY_HEIGHT = 30.0f;
 const float ENEMY_RENDER_DISTANCE_X = 80.0f;
 const float ENEMY_RENDER_DISTANCE_Y = 50.0f;
 const float ENEMY_PADDING_X = 40.0f;
@@ -48,7 +50,8 @@ float Game::ScreenHeight;
 Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
     : m_State(GAME_ACTIVE), m_Keys(), m_Window(window),
       m_Player(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y, PLAYER_STARTING_POSITION_Z,
-               "player", "missile", PLAYER_STARTING_ANGLE, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_STARTING_STEP, window),
+               "player", "missile", PLAYER_STARTING_ANGLE, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_STARTING_STEP,
+               PLAYER_STARTING_VELOCITY, window),
       m_Projection(glm::ortho( 0.0f, static_cast<float>(width),
                                0.0f, static_cast<float>(height),
                               -1.0f, 1.0f)),
@@ -57,7 +60,7 @@ Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
       m_NumberOfEnemyTypes(6)
 {
     LoadGameObjects();
-    LoadLevels();
+    LoadLevelsStructure();
     Game::ScreenWidth = width;
     Game::ScreenHeight = height;
 }
@@ -111,25 +114,36 @@ void Game::Update()
         i++;
     }
 
-    // Check if the level is over by counting dead enemies
+
+
+    std::random_device rd;  //Will be used to obtain a seed for the random number engine
+    std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
+    std::exponential_distribution<> d(1);
+    std::vector<float> launchProb;
+    for (int i = 0; i < m_Enemies.size(); i++)
+    {
+        launchProb.emplace_back(d(gen));
+    }
+
     short int deadEnemiesCount = 0;
+    // Check if the level is over by counting dead enemies and launch enemy's missiles
     for (int i = 0; i < m_Enemies.size(); i++)
     {
         Enemy& enemy = m_Enemies[i];
         enemy.CoolGunDownBy(1);
-        if (!enemy.IsAlive())
+        if (!enemy.IsAlive()) {
             deadEnemiesCount++;
-
-        // Scale down the explosion until it reaches zero by 'EXPLOSION_STEP'
-        if (enemy.GetExplosionTime() < 1.0f && enemy.GetExplosionTime() > 0) {
-            enemy.Transform(glm::vec2(enemy.GetPos().x, enemy.GetPos().y),
-                            glm::vec2(enemy.GetExplosionTime() * enemy.GetWidth(),
-                                      enemy.GetExplosionTime() * enemy.GetHeight()), 0.0f);
-            enemy.ExplosionTimeReduce(ENEMY_EXPLOSION_STEP);
+            // Scale down the explosion until it reaches zero by 'EXPLOSION_STEP'
+            if (enemy.GetExplosionTime() < 1.0f && enemy.GetExplosionTime() > 0) {
+                enemy.Transform(glm::vec2(enemy.GetPos().x, enemy.GetPos().y),
+                                glm::vec2(enemy.GetExplosionTime() * enemy.GetWidth(),
+                                          enemy.GetExplosionTime() * enemy.GetHeight()), 0.0f);
+                enemy.ExplosionTimeReduce(ENEMY_EXPLOSION_STEP);
+            }
         } else {
             auto direction = enemy.GetDirection();
             enemy.Move(direction);
-            if(enemy.ToLaunch() && enemy.GetGunState() == GunState::READY) {
+            if(enemy.GetGunState() == GunState::READY && launchProb[i] > 8.0) {
                 Game::EnemyMissiles.emplace_back(enemy.MissileLaunch());
                 enemy.ResetGunState();
             }
@@ -139,7 +153,6 @@ void Game::Update()
     // Process all enemy's missiles: check if they are out of the screen or they hit the player
     for (int i = 0; i < Game::EnemyMissiles.size(); )
     {
-//        logthis("here i am", "");
         Missile& missile = Game::EnemyMissiles[i];
         // Move the missile towards the enemy
         missile.Transform(glm::vec2(missile.GetPos().x, missile.GetPos().y - missile.GetStep()),
@@ -169,7 +182,11 @@ void Game::Update()
     }
 
     if (deadEnemiesCount == m_Enemies.size())
+    {
         m_ActiveLevel++;
+        m_Enemies.clear();
+        LoadNextLevel();
+    }
 }
 
 void Game::MissileLaunch(const GameObject& launcher)
@@ -239,7 +256,7 @@ void Game::LoadTexture(const std::string& path, const std::string& name, unsigne
     AddTexture(texture, name);
 }
 
-void Game::LoadLevels()
+void Game::LoadLevelsStructure()
 {
     DIR *dir;
     struct dirent *ent;
@@ -293,6 +310,14 @@ void Game::LoadGameObjects()
     LoadTexture("res/textures/explosion.png", "explosion", 0);
 }
 
+void Game::LoadNextLevel()
+{
+    SetEnemies();
+    BindActiveLevelTexture();
+    m_Player.Transform(glm::vec2(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y),
+                       glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
+}
+
 unsigned int Game::GetActiveLevel()
 {
     return m_ActiveLevel - 1;
@@ -317,7 +342,7 @@ void Game::GameLoop()
 
     va.AddBuffer(vb, layout);
 
-    SetEnemies();
+    LoadNextLevel();
 
     do {
         Update();

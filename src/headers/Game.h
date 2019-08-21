@@ -73,7 +73,8 @@ public:
 
     void LoadTexture(const std::string& path, const std::string& name, unsigned int slot);
     void LoadShader(const std::string& path, const std::string& name);
-    void LoadLevels();
+    void LoadLevelsStructure();
+    void LoadNextLevel();
     void LoadGameObjects();
     void BindActiveLevelTexture();
     unsigned int GetActiveLevel();

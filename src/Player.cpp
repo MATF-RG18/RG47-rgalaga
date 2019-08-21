@@ -5,8 +5,8 @@
 
 
 Player::Player(float x, float y, float z, std::string texName, std::string missileTexName, float angle,
-               float width, float height, float step, GLFWwindow *window)
-    : GameObject(x, y, z, texName, angle, width, height, step),
+               float width, float height, float step, float velocity, GLFWwindow *window)
+    : GameObject(x, y, z, texName, angle, width, height, step), m_Velocity(velocity),
       m_MissileTexName(missileTexName)
 {
 //    m_MissileSpeed = 5.0f;

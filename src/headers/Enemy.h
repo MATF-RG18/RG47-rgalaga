@@ -9,8 +9,6 @@ class Enemy : public GameObject
 private:
     Position m_InitialPosition;
     Movement m_CurrentDirection;
-    static float InitialShootingProbability;
-    float m_ShootingProbability;
     float m_PatrolMoveLength;
     std::string m_MissileTexName;
 public:
@@ -23,6 +21,6 @@ public:
     Movement GetDirection();
     Missile MissileLaunch();
     void ChangeDirection();
-    bool ToLaunch();
+//    bool ToLaunch();
 //    void Move(int direction);
 };

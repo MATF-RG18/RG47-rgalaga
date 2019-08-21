@@ -15,5 +15,6 @@ Missile::~Missile()
 
 bool Missile::IsOutOfScreen(const float& screenWidth, const float& screenHeight)
 {
-    return (m_pos.x > screenWidth || m_pos.y > screenHeight);
+
+    return (m_pos.x > screenWidth || m_pos.y > screenHeight || m_pos.x < 0 || m_pos.y < 0);
 }
