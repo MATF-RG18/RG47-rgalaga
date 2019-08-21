@@ -16,12 +16,14 @@ const float PLAYER_STARTING_POSITION_Y = 30.0f;
 const float PLAYER_STARTING_POSITION_Z = 1.0f;
 const float PLAYER_STARTING_ANGLE = 0.0f;
 
+// Enemy details
 const float ENEMY_WIDTH = 40.0f;
 const float ENEMY_HEIGHT = 40.0f;
 const float ENEMY_RENDER_DISTANCE_X = 80.0f;
 const float ENEMY_RENDER_DISTANCE_Y = 50.0f;
 const float ENEMY_PADDING_X = 40.0f;
 const float ENEMY_PADDING_Y = 25.0f;
+const float ENEMY_EXPLOSION_STEP = 0.01f;
 
 const std::string SHADER_LOCATION = "res/shaders/Basic.shader";
 
@@ -40,14 +42,15 @@ const unsigned int INDICES[] = {
 
 std::vector<Missile> Game::PlayerMissiles;
 std::vector<Missile> Game::EnemyMissiles;
-
+float Game::ScreenWidth;
+float Game::ScreenHeight;
 
 Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
-    : m_State(GAME_ACTIVE), m_Keys(), m_Width(width), m_Height(height), m_Window(window),
+    : m_State(GAME_ACTIVE), m_Keys(), m_Window(window),
       m_Player(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y, PLAYER_STARTING_POSITION_Z,
                "player", PLAYER_STARTING_ANGLE, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_STARTING_STEP, window),
-      m_Projection(glm::ortho( 0.0f, static_cast<float>(m_Width),
-                               0.0f, static_cast<float>(m_Height),
+      m_Projection(glm::ortho( 0.0f, static_cast<float>(width),
+                               0.0f, static_cast<float>(height),
                               -1.0f, 1.0f)),
       m_View(glm::mat4(1.0f)),
       m_ActiveLevel(1),
@@ -55,6 +58,8 @@ Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
 {
     LoadGameObjects();
     LoadLevels();
+    Game::ScreenWidth = width;
+    Game::ScreenHeight = height;
 }
 
 Game::~Game()
@@ -69,24 +74,44 @@ void Game::Init()
 
 void Game::Update()
 {
-    for (int i = 0; i < PlayerMissiles.size(); i++)
+    // Cool the player's gun on each update if it's not already prepared for the next launch
+    if (m_Player.GetGunState() != GunState::READY)
+        m_Player.CoolGunDownBy(1);
+    // Process all player's missiles: check if they are out of the screen or they hit some enemy's spaceship
+    for (int i = 0; i < Game::PlayerMissiles.size(); )
     {
-        Missile& missile = PlayerMissiles[i];
+        Missile& missile = Game::PlayerMissiles[i];
+        // Move the missile towards the enemy
         missile.Transform(glm::vec2(missile.GetPos().x, missile.GetPos().y + missile.GetStep()),
                           glm::vec2(missile.GetWidth(), missile.GetHeight()), 0.0f);
+
+        // Clear missiles that are out of the screen
+        if (missile.IsOutOfScreen(Game::ScreenWidth, Game::ScreenHeight))
+        {
+            Game::PlayerMissiles.erase(Game::PlayerMissiles.begin() + i);
+            i--;
+        }
+
+        // Destroy enemy's spaceship if hit by player's missile
         for (int j = 0; j < m_Enemies.size(); j++)
         {
             Enemy& enemy = m_Enemies[j];
-            if (abs(enemy.GetPos().x - missile.GetPos().x) <= enemy.GetWidth() &&
-                       abs(enemy.GetPos().y - missile.GetPos().y) <= enemy.GetHeight()) {
+            if (fabs(enemy.GetPos().x - missile.GetPos().x) <= enemy.GetWidth() &&
+                       fabs(enemy.GetPos().y - missile.GetPos().y) <= enemy.GetHeight()) {
                 Game::PlayerMissiles.erase(Game::PlayerMissiles.begin() + i);
+                i--;
                 enemy.SetTexture("explosion");
                 enemy.ExplosionTimeReduce(0.1);
-
                 enemy.SetState(LifeState::DEAD);
+                break;
             }
         }
+        // 'i' will increment by 1 comparing to the previous step in the loop, only if there were no deletions
+        // from Missile vectors - if some missile hit the enemy
+        i++;
     }
+
+    // Check if the level is over by counting dead enemies
     short int deadEnemiesCount = 0;
     for (int i = 0; i < m_Enemies.size(); i++)
     {
@@ -94,11 +119,15 @@ void Game::Update()
         if (!enemy.IsAlive())
             deadEnemiesCount++;
 
+        // Scale down the explosion until it reaches zero by 'EXPLOSION_STEP'
         if (enemy.GetExplosionTime() < 1.0f && enemy.GetExplosionTime() > 0) {
             enemy.Transform(glm::vec2(enemy.GetPos().x, enemy.GetPos().y),
                             glm::vec2(enemy.GetExplosionTime() * enemy.GetWidth(),
                                       enemy.GetExplosionTime() * enemy.GetHeight()), 0.0f);
-            enemy.ExplosionTimeReduce(0.02);
+            enemy.ExplosionTimeReduce(ENEMY_EXPLOSION_STEP);
+        } else {
+            auto direction = enemy.GetDirection();
+            enemy.Move(direction);
         }
     }
     if (deadEnemiesCount == m_Enemies.size())
@@ -122,18 +151,12 @@ void Game::KeyCallback(GLFWwindow *window, int key, int scancode, int action, in
                     player->Move(Movement::RIGHT);
                     break;
                 case GLFW_KEY_SPACE :
-                    if (Game::PlayerMissiles.size() >= 20) {
-                        Game::PlayerMissiles.clear();
-                        for (int i = 0; i < Game::PlayerMissiles.size(); i ++)
-                        {
-                            if (Game::PlayerMissiles[i].IsOutOfScreen())
-                            {
-                                Game::PlayerMissiles.erase(Game::PlayerMissiles.begin() + i);
-                            }
-                        }
-                    }
-                    if (Game::PlayerMissiles.size() < 20)
+                    if (player->GetGunState() == GunState::READY) {
                         Game::PlayerMissiles.emplace_back(player->MissileLaunch());
+                        player->ResetGunState();
+                    }
+                    // TODO:
+                    //  -Maybe change missiles vectors to lists because of frequent deletions
                     break;
                 default:
                     break;
@@ -214,9 +237,9 @@ void Game::SetEnemies()
     for (int i = 0; i < m_RowsEnemiesCount; i++) {
         for (int j = 0; j < m_ColsEnemiesCount; j++) {
             m_Enemies.emplace_back(ENEMY_PADDING_X + j * ENEMY_RENDER_DISTANCE_X,
-                                   Game::m_Height - ENEMY_PADDING_Y - i * ENEMY_RENDER_DISTANCE_Y, 1,
+                                   Game::ScreenHeight - ENEMY_PADDING_Y - i * ENEMY_RENDER_DISTANCE_Y, 1,
                                    "enemy_" + std::to_string(currentLevelEnemies[i][j]), 0,
-                                   ENEMY_WIDTH, ENEMY_HEIGHT, 2.0f);
+                                   ENEMY_WIDTH, ENEMY_HEIGHT, 0.5f, 10.0f);
         }
     }
 }
@@ -288,7 +311,7 @@ void Game::GameLoop()
         }
 
         {   // Render Missiles
-            for (int i = 0; i < PlayerMissiles.size(); i++)
+            for (int i = 0; i < Game::PlayerMissiles.size(); i++)
             {
                     GetShader("basic").Bind();
                     m_Textures[Game::PlayerMissiles[i].GetTex()].Bind();

@@ -30,7 +30,8 @@ private:
     // Game state
     GameState m_State;
     bool m_Keys[1024];
-    unsigned int m_Width, m_Height;
+    static float ScreenWidth;
+    static float ScreenHeight;
     unsigned int m_RowsEnemiesCount;
     unsigned int m_ColsEnemiesCount;
 

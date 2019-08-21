@@ -10,7 +10,8 @@ GameObject::GameObject(float x, float y, float z, std::string texName, float ang
       m_view(glm::mat4(1.0f)),
       m_model(glm::mat4(1.0f)),
       m_ExplosionTime(1.0f),
-      m_State(LifeState::ALIVE)
+      m_State(LifeState::ALIVE),
+      m_CoolDownTime(GunState::READY)
 {
     Transform(glm::vec2(x, y), glm::vec2(width, height), angle);
 }
@@ -64,3 +65,4 @@ void GameObject::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
 
     m_mvp = m_projection * m_view * m_model;
 }
+

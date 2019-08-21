@@ -9,6 +9,7 @@
 
 #define RG_ASSERT(x) if (!(x)) assert(false)
 #define RG_INT2VOIDP(i) (void*)(uintptr_t)(i)
+#define logthis(message, x) std::cout << message << ": " << x << std::endl
 
 
 void inline GLClearError()
