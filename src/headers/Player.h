@@ -8,8 +8,9 @@ class Player : public GameObject
 {
     private:
         float m_Velocity;
+        std::string m_MissileTexName;
     public:
-        Player(float x, float y, float z, std::string texName,
+        Player(float x, float y, float z, std::string texName, std::string missileTexName,
                float angle, float width, float height, float step, GLFWwindow *window);
         virtual ~Player();
 

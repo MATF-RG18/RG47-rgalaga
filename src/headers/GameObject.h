@@ -61,8 +61,8 @@ class GameObject
         glm::mat4 m_model;
         glm::mat4 m_mvp;
     public:
-        GameObject(float x, float y, float z, std::string texName, float angle,
-                   float width, float height, float step);
+        GameObject(float x, float y, float z, std::string texName,
+                   float angle, float width, float height, float step);
         virtual ~GameObject();
 
         inline const Position& GetPos() const                 { return m_pos; }
@@ -74,12 +74,12 @@ class GameObject
         inline const glm::mat4& GetMVP() const                { return m_mvp; }
         inline const float GetExplosionTime() const           { return m_ExplosionTime; }
         inline bool IsAlive()                                 { return m_State == LifeState::ALIVE; }
-        inline const short& GetGunState() const            { return m_CoolDownTime; }
+        inline const short& GetGunState() const               { return m_CoolDownTime; }
         inline void SetTexture(const std::string& texName)    { m_tex = texName; }
         inline void ExplosionTimeReduce(const float amount)   { m_ExplosionTime -= amount; }
         inline void SetState(LifeState state)                 { m_State = state; }
         inline void CoolGunDownBy(short amount)               { m_CoolDownTime = std::max(m_CoolDownTime - amount, 0); }
-        inline void ResetGunState()                        { m_CoolDownTime = GunState::FIRED; }
+        inline void ResetGunState()                           { m_CoolDownTime = GunState::FIRED; }
 
         void SetPosition(const float x, const float y, const float z);
         void UpdatePos(const Position& pos);

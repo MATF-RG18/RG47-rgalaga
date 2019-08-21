@@ -1,8 +1,8 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject(float x, float y, float z, std::string texName, float angle,
-                       float width, float height, float step)
+GameObject::GameObject(float x, float y, float z, std::string texName,
+                       float angle, float width, float height, float step)
     : m_pos{ x, y, z }, m_tex(texName), m_angle(angle),
       m_width(width), m_height(height),
       m_step(step),
@@ -65,4 +65,3 @@ void GameObject::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
 
     m_mvp = m_projection * m_view * m_model;
 }
-

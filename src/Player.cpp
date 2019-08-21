@@ -4,9 +4,10 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 
-Player::Player(float x, float y, float z, std::string texName, float angle,
+Player::Player(float x, float y, float z, std::string texName, std::string missileTexName, float angle,
                float width, float height, float step, GLFWwindow *window)
-    : GameObject(x, y, z, texName, angle, width, height, step)
+    : GameObject(x, y, z, texName, angle, width, height, step),
+      m_MissileTexName(missileTexName)
 {
 //    m_MissileSpeed = 5.0f;
     // Add the pointer to Player so the Player's methods could be called from KeyCallback in Game.cpp
@@ -47,7 +48,7 @@ void Player::Move(int direction)
 
 Missile Player::MissileLaunch()
 {
-    Missile missile(m_pos.x, m_pos.y + m_height / 2, m_pos.z, "missile", 0.0f, 10.0f, 20.0f, 5.0f);
+    Missile missile(m_pos.x, m_pos.y + m_height / 2, m_pos.z, m_MissileTexName, 0.0f, 10.0f, 20.0f, 5.0f);
     return missile;
 }
 
