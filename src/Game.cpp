@@ -8,6 +8,11 @@
 #include <cmath>
 #include <random>
 
+#include <irrKlang.h>
+using namespace irrklang;
+
+ISoundEngine *SoundEngine = createIrrKlangDevice();
+
 // Player details
 const float PLAYER_WIDTH = 50.0f;
 const float PLAYER_HEIGHT = 50.0f;
@@ -26,6 +31,7 @@ const float ENEMY_RENDER_DISTANCE_Y = 50.0f;
 const float ENEMY_PADDING_X = 40.0f;
 const float ENEMY_PADDING_Y = 25.0f;
 const float ENEMY_EXPLOSION_STEP = 0.01f;
+const float ENEMY_LAUNCH_RATE_LIMIT = 8.0f;
 
 const std::string SHADER_LOCATION = "res/shaders/Basic.shader";
 
@@ -67,7 +73,7 @@ Game::Game(unsigned int width, unsigned int height, GLFWwindow *window)
 
 Game::~Game()
 {
-
+    SoundEngine->drop();
 }
 
 void Game::Init()
@@ -102,6 +108,7 @@ void Game::Update()
             if (fabs(enemy.GetPos().x - missile.GetPos().x) <= enemy.GetWidth() / 2 &&
                        fabs(enemy.GetPos().y - missile.GetPos().y) <= enemy.GetHeight() / 2) {
                 Game::PlayerMissiles.erase(Game::PlayerMissiles.begin() + i);
+                SoundEngine->play2D("res/audio/blast.wav", GL_FALSE);
                 i--;
                 enemy.SetTexture("explosion");
                 enemy.ExplosionTimeReduce(0.1);
@@ -113,8 +120,6 @@ void Game::Update()
         // from Missile vectors - if some missile hit the enemy
         i++;
     }
-
-
 
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen(rd()); //Standard mersenne_twister_engine seeded with rd()
@@ -143,10 +148,18 @@ void Game::Update()
         } else {
             auto direction = enemy.GetDirection();
             enemy.Move(direction);
-            if(enemy.GetGunState() == GunState::READY && launchProb[i] > 8.0) {
+            // Decrease limit which is used to calculate if the enemy should fire - Increase possibility of shooting
+            // if the number of enemies decreases
+            float decreaseLimit = 5 * (1 / (m_Enemies.size() - deadEnemiesCount + 1));
+            if(enemy.GetGunState() == GunState::READY && launchProb[i] > ENEMY_LAUNCH_RATE_LIMIT - decreaseLimit) {
                 Game::EnemyMissiles.emplace_back(enemy.MissileLaunch());
+                SoundEngine->play2D("res/audio/missile_launching.wav", GL_FALSE);
                 enemy.ResetGunState();
             }
+        }
+        if (enemy.GetExplosionTime() <= 0.0f) {
+            // Move the enemy away from the scene
+            enemy.Transform(glm::vec2(-1, -1), glm::vec2(0, 0), 0.0f);
         }
     }
 
@@ -169,6 +182,7 @@ void Game::Update()
         if (fabs(m_Player.GetPos().x - missile.GetPos().x) <= m_Player.GetWidth() / 2 &&
             fabs(m_Player.GetPos().y - missile.GetPos().y) <= m_Player.GetHeight() / 2) {
             Game::EnemyMissiles.erase(Game::EnemyMissiles.begin() + i);
+            SoundEngine->play2D("res/audio/blast.wav", GL_FALSE);
             i--;
             m_Player.SetTexture("explosion");
             m_Player.ExplosionTimeReduce(0.1);
@@ -208,6 +222,7 @@ void Game::KeyCallback(GLFWwindow *window, int key, int scancode, int action, in
                 case GLFW_KEY_SPACE :
                     if (player->GetGunState() == GunState::READY) {
                         Game::PlayerMissiles.emplace_back(player->MissileLaunch());
+                        SoundEngine->play2D("res/audio/missile_launching.wav", GL_FALSE);
                         player->ResetGunState();
                     }
                     // TODO:
@@ -325,6 +340,14 @@ unsigned int Game::GetActiveLevel()
 
 void Game::GameLoop()
 {
+    if (!SoundEngine)
+    {
+        printf("Could not startup engine\n");
+        return; // error starting up the engine
+    }
+//    SoundEngine->play2D("/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang/media/explosion.wav", GL_TRUE);
+    SoundEngine->play2D("res/audio/rgalaga.wav", GL_TRUE);
+
     LoadShader(SHADER_LOCATION, "basic");
 
     GetShader("basic").SetUniform1i("u_Texture", 0);
