@@ -14,7 +14,9 @@
 #include <map>
 #include <string>
 
+
 // Represents the current state of the game
+// TODO: Possibly add a state for level win, game over, ...
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
@@ -26,62 +28,58 @@ enum GameState {
 // easy access to each of the components and manageability.
 class Game
 {
-private:
-    // Game state
-    GameState m_State;
-    bool m_Keys[1024];
-    static float ScreenWidth;
-    static float ScreenHeight;
-    unsigned int m_RowsEnemiesCount;
-    unsigned int m_ColsEnemiesCount;
+    private:
+        // Game state
+        GameState m_State;
+        static float ScreenWidth;
+        static float ScreenHeight;
+        unsigned int m_RowsEnemiesCount;
+        unsigned int m_ColsEnemiesCount;
 
-    // OpenGL
-    std::map<std::string, Shader> m_Shaders;
-    std::map<std::string, Texture> m_Textures;
+        // OpenGL
+        std::map<std::string, Shader> m_Shaders;
+        std::map<std::string, Texture> m_Textures;
 
-    // MVP
-    glm::mat4 m_Projection;
-    glm::mat4 m_View;
+        // MVP
+        glm::mat4 m_Projection;
+        glm::mat4 m_View;
 
-    GLFWwindow *m_Window;
+        // Game objects
+        Player m_Player;
+        std::vector<Enemy> m_Enemies;
+        static std::vector<Missile> PlayerMissiles;
+        static std::vector<Missile> EnemyMissiles;
 
-    // Game objects
-    Player m_Player;
-    std::vector<Enemy> m_Enemies;
-    static std::vector<Missile> PlayerMissiles;
-    static std::vector<Missile> EnemyMissiles;
+        unsigned int m_ActiveLevel;
+        std::vector<GameLevel> m_Levels;
+        int m_NumberOfEnemyTypes;
 
-    unsigned int m_ActiveLevel;
-    std::vector<GameLevel> m_Levels;
-    int m_NumberOfEnemyTypes;
+        static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
-    static void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-    static void MissileLaunch(const GameObject& launcher);
-public:
-    Game(unsigned int width, unsigned int height, GLFWwindow *window);
-    ~Game();
+    public:
+        Game(unsigned int width, unsigned int height);
+        ~Game();
 
-    void SetState(GameState state);
+        void SetState(GameState &state);
 
-    // Initialize game state (load all shaders/textures/levels)
-    void Init();
+        // Initialize game state (load all shaders/textures/levels)
+        void Init();
 
-    void AddShader(const Shader *shader, const std::string& name);
-    Shader GetShader(const std::string& name);
-    void AddTexture(const Texture* texture, const std::string& name);
-    Texture GetTexture(const std::string& name);
+        void AddShader(const Shader *shader, const std::string &name);
+        Shader GetShader(const std::string &name);
+        void AddTexture(const Texture *texture, const std::string &name);
+        Texture GetTexture(const std::string &name);
 
-    void LoadTexture(const std::string& path, const std::string& name, unsigned int slot);
-    void LoadShader(const std::string& path, const std::string& name);
-    void LoadLevelsStructure();
-    void LoadNextLevel();
-    void LoadGameObjects();
-    void BindActiveLevelTexture();
-    unsigned int GetActiveLevel();
-    void SetEnemies();
+        void LoadTexture(const std::string &path, const std::string &name, unsigned int slot);
+        void LoadShader(const std::string &path, const std::string &name);
+        void LoadLevelsStructure();
+        void LoadNextLevel();
+        void LoadGameObjects();
+        void BindActiveLevelTexture();
+        unsigned int GetActiveLevel();
+        void SetEnemies();
 
-
-    // GameLoop
-    void Update();
-    void GameLoop();
+        // GameLoop
+        void Update();
+        void GameLoop();
 };

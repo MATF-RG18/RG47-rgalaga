@@ -1,15 +1,14 @@
 #include "Enemy.h"
 
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 #include <random>
 
 
-Enemy::Enemy(float x, float y, float z, std::string texName, std::string missileTexName,
+Enemy::Enemy(float x, float y, float z, const std::string texName, const std::string missileTexName,
              float angle, float width, float height, float step, float patrol)
     : GameObject(x, y, z, texName, angle, width, height, step),
-      m_InitialPosition{ x, y, z },
+      m_InitialPosition{x, y, z},
       m_CurrentDirection(Movement::LEFT),
       m_PatrolMoveLength(patrol),
       m_MissileTexName(missileTexName)
@@ -19,10 +18,10 @@ Enemy::Enemy(float x, float y, float z, std::string texName, std::string missile
 
 Enemy::~Enemy()
 {
-
+    
 }
 
-void Enemy::Move(int direction)
+void Enemy::Move(Movement direction)
 {
     // TODO:
     //  Kamikaza move maybe

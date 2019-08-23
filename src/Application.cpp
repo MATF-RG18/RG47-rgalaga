@@ -3,29 +3,18 @@
 
 #include <iostream>
 
-//#include "VertexBuffer.h"
-//#include "VertexArray.h"
-//#include "IndexBuffer.h"
-//#include "Shader.h"
-//#include "Renderer.h"
-//#include "Texture.h"
-//#include "Spacecraft.h"
 #include "Game.h"
 #include "Player.h"
-
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 
 
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 
-GLFWwindow* WindowInitialization()
+GLFWwindow *WindowInitialization()
 {
     // Initialize GLFW
-    if(!glfwInit())
-    {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
+    if (!glfwInit()) {
+        fprintf(stderr, "Failed to initialize GLFW\n");
         getchar();
         return nullptr;
     }
@@ -36,13 +25,12 @@ GLFWwindow* WindowInitialization()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a window and OpenGL context
-    GLFWwindow* window = glfwCreateWindow(800, 600, "RGalaga", nullptr, nullptr);
-    if( window == nullptr){
+    GLFWwindow *window = glfwCreateWindow(800, 600, "RGalaga", nullptr, nullptr);
+    if (window == nullptr) {
         fprintf(stderr, "Failed to create GLFW window.\n");
         getchar();
         glfwTerminate();
         return nullptr;
-
     }
     glfwMakeContextCurrent(window);
 
@@ -65,16 +53,11 @@ GLFWwindow* WindowInitialization()
 
 int main()
 {
-    GLFWwindow* window = WindowInitialization();
+    GLFWwindow *window = WindowInitialization();
     if (!window)
         return -1;
 
-    // TODO:
-    //  -Change hardcoded values
-    //  -Fix game loop
-
-
-    Game RGalaga(SCREEN_WIDTH, SCREEN_HEIGHT, window);
+    Game RGalaga(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     GLCall(glEnable(GL_BLEND));
     GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));

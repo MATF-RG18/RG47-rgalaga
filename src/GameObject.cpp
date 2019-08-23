@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
 
-GameObject::GameObject(float x, float y, float z, std::string texName,
+GameObject::GameObject(float x, float y, float z, const std::string texName,
                        float angle, float width, float height, float step)
-    : m_pos{ x, y, z }, m_tex(texName), m_angle(angle),
+    : m_pos{x, y, z}, m_tex(texName), m_angle(angle),
       m_width(width), m_height(height),
       m_step(step),
       m_projection(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f)),
@@ -21,27 +21,7 @@ GameObject::~GameObject()
 
 }
 
-void GameObject::SetPosition(const float x, const float y, const float z)
-{
-
-}
-
-void GameObject::Move(int direction)
-{
-
-}
-
-void GameObject::UpdatePos(const Position &pos)
-{
-
-}
-
-void GameObject::UpdateAngle(const float a)
-{
-
-}
-
-void GameObject::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
+void GameObject::Transform(glm::vec2 position, glm::vec2 size, float rotate)
 {
     m_pos.x = position[0];
     m_pos.y = position[1];
@@ -65,3 +45,5 @@ void GameObject::Transform(glm::vec2 position, glm::vec2 size, GLfloat rotate)
 
     m_mvp = m_projection * m_view * m_model;
 }
+
+

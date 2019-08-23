@@ -4,14 +4,12 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 
-Player::Player(float x, float y, float z, std::string texName, std::string missileTexName, float angle,
-               float width, float height, float step, float velocity, GLFWwindow *window)
+Player::Player(float x, float y, float z, const std::string texName, const std::string missileTexName,
+               float angle, float width, float height, float step, float velocity)
     : GameObject(x, y, z, texName, angle, width, height, step), m_Velocity(velocity),
       m_MissileTexName(missileTexName)
 {
-//    m_MissileSpeed = 5.0f;
-    // Add the pointer to Player so the Player's methods could be called from KeyCallback in Game.cpp
-//    glfwSetWindowUserPointer(window, this);
+
 }
 
 Player::~Player()
@@ -19,19 +17,15 @@ Player::~Player()
 
 }
 
-void Player::Move(int direction)
+void Player::Move(Movement direction)
 {
-    // Update Player position with args
     // If the Player hit the leftmost/rightmost pixel of window,
     // prevent moving further left/right by leaving changePosition false
-//    std::cout << "here i am" << std::endl;
     auto move = direction * (m_step + m_Velocity);
 
-//    std::cout << move << std::endl;
     bool changePosition = false;
 
-    if ( !((m_pos.x + m_width / 2 + move) >=  800 || (m_pos.x - m_width / 2 + move)  <= 0))
-    {
+    if (!((m_pos.x + m_width / 2 + move) >= 800 || (m_pos.x - m_width / 2 + move) <= 0)) {
         m_pos.x += move;
         changePosition = true;
     }
@@ -40,10 +34,6 @@ void Player::Move(int direction)
         Transform(glm::vec2(m_pos.x, m_pos.y), glm::vec2(m_width, m_height), 0.0f);
 
     m_Velocity++;
-//    std::cout << "Moved to (" << m_pos.x << ", " << m_pos.y << ") - left: " << m_pos.x - m_width/2
-//              << ", right: " << m_pos.x + m_width/2 << std::endl;
-
-
 }
 
 Missile Player::MissileLaunch()
