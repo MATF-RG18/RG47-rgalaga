@@ -72,14 +72,16 @@ class GameObject
         inline const float GetHeight() const                 { return m_height; }
         inline const float GetWidth() const                  { return m_width; }
         inline const float GetStep() const                   { return m_step; }
+        inline const float GetLifeState() const              { return m_State; }
         inline const short &GetGunState() const              { return m_CoolDownTime; }
         inline const glm::mat4 &GetMVP() const               { return m_mvp; }
         inline const float GetExplosionTime() const          { return m_ExplosionTime; }
         inline bool IsAlive() const                          { return m_State == LifeState::ALIVE; }
 
         inline void SetTexture(const std::string texName)    { m_tex = texName; }
-        inline void SetState(LifeState state)                { m_State = state; }
+        inline void SetLifeState(LifeState state)            { m_State = state; }
         inline void ExplosionTimeReduce(const float amount)  { m_ExplosionTime -= amount; }
+        inline void SetExplosionTime(const float time)       { m_ExplosionTime = time; }
         inline void CoolGunDownBy(const short amount)        { m_CoolDownTime = std::max(m_CoolDownTime - amount, 0); }
         inline void ResetGunState()                          { m_CoolDownTime = GunState::FIRED; }
 

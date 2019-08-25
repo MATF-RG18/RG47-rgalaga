@@ -18,9 +18,11 @@
 // Represents the current state of the game
 // TODO: Possibly add a state for level win, game over, ...
 enum GameState {
+    GAME_START,
     GAME_ACTIVE,
     GAME_MENU,
-    GAME_WIN
+    GAME_WON,
+    GAME_OVER
 };
 
 // Game holds all game-related state and functionality.
@@ -28,11 +30,12 @@ enum GameState {
 // easy access to each of the components and manageability.
 class Game
 {
-    private:
+    public:
         // Game state
-        GameState m_State;
+        static GameState State;
         static float ScreenWidth;
         static float ScreenHeight;
+
         unsigned int m_RowsEnemiesCount;
         unsigned int m_ColsEnemiesCount;
 
@@ -60,7 +63,7 @@ class Game
         Game(unsigned int width, unsigned int height);
         ~Game();
 
-        void SetState(GameState &state);
+        static void SetState(GameState state);
 
         // Initialize game state (load all shaders/textures/levels)
         void Init();

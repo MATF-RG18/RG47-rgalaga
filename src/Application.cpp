@@ -25,10 +25,9 @@ GLFWwindow *WindowInitialization()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Create a window and OpenGL context
-    GLFWwindow *window = glfwCreateWindow(800, 600, "RGalaga", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "RGalaga", nullptr, nullptr);
     if (window == nullptr) {
-        fprintf(stderr, "Failed to create GLFW window.\n");
-        getchar();
+        std::cerr << "Failed to create GLFW window." << std::endl;
         glfwTerminate();
         return nullptr;
     }
@@ -37,8 +36,7 @@ GLFWwindow *WindowInitialization()
     // Initialize GLEW
     glewExperimental = (GLboolean) true; // Ensures that all extensions with valid entry points will be exposed
     if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-        getchar();
+        std::cerr << "Failed to  initialize GLEW." << std::endl;
         glfwTerminate();
         return nullptr;
     }

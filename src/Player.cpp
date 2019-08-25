@@ -5,9 +5,9 @@
 
 
 Player::Player(float x, float y, float z, const std::string texName, const std::string missileTexName,
-               float angle, float width, float height, float step, float velocity)
+               float angle, float width, float height, float step, float velocity, short int lives)
     : GameObject(x, y, z, texName, angle, width, height, step), m_Velocity(velocity),
-      m_MissileTexName(missileTexName)
+      m_MissileTexName(missileTexName), m_Score(0), m_NumberOfLives(lives)
 {
 
 }

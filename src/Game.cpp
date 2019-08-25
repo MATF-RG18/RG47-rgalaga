@@ -30,6 +30,9 @@ const float PLAYER_STARTING_POSITION_Y = 30.0f;
 const float PLAYER_STARTING_POSITION_Z = 1.0f;
 const float PLAYER_STARTING_ANGLE = 0.0f;
 const float PLAYER_STARTING_VELOCITY = 2.0f;
+const short int PLAYER_INITIAL_NUMBER_OF_LIVES = 3;
+// TODO: Give different values for each enemy in the future, maybe
+const int PLAYER_SCORE_FOR_KILL = 10;
 
 // Enemy details
 const float ENEMY_WIDTH = 30.0f;
@@ -60,12 +63,12 @@ std::vector<Missile> Game::PlayerMissiles;
 std::vector<Missile> Game::EnemyMissiles;
 float Game::ScreenWidth;
 float Game::ScreenHeight;
+GameState Game::State;
 
 Game::Game(unsigned int width, unsigned int height)
-    : m_State(GAME_ACTIVE),
-      m_Player(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y, PLAYER_STARTING_POSITION_Z,
+    : m_Player(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y, PLAYER_STARTING_POSITION_Z,
                "player", "missile", PLAYER_STARTING_ANGLE, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_STARTING_STEP,
-               PLAYER_STARTING_VELOCITY),
+               PLAYER_STARTING_VELOCITY, PLAYER_INITIAL_NUMBER_OF_LIVES),
       m_Projection(glm::ortho(0.0f, static_cast<float>(width),
                               0.0f, static_cast<float>(height),
                               -1.0f, 1.0f)),
@@ -77,6 +80,7 @@ Game::Game(unsigned int width, unsigned int height)
     LoadLevelsStructure();
     Game::ScreenWidth = width;
     Game::ScreenHeight = height;
+    Game::State = GameState::GAME_START;
 }
 
 Game::~Game()
@@ -87,10 +91,9 @@ Game::~Game()
 void Game::GameLoop()
 {
     if (!SoundEngine) {
-        printf("Could not startup engine\n");
+        std::cerr << "Could not startup engine" << std::endl;
         return; // error starting up the engine
     }
-//    SoundEngine->play2D("/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang/media/explosion.wav", GL_TRUE);
     SoundEngine->play2D("res/audio/rgalaga.wav", GL_TRUE);
 
     LoadShader(SHADER_LOCATION, "basic");
@@ -110,7 +113,7 @@ void Game::GameLoop()
 
     va.AddBuffer(vb, layout);
 
-    LoadNextLevel();
+//    LoadNextLevel();
 
     GLFWwindow *window = GLCall(glfwGetCurrentContext());
 
@@ -118,50 +121,70 @@ void Game::GameLoop()
         Update();
 
         renderer.Clear();
+        if (Game::State == GameState::GAME_START) {
+            LoadNextLevel();
 
-        {   // Render background
             GetShader("basic").Bind();
-            BindActiveLevelTexture();
+            m_Textures["welcome-screen"].Bind();
+            GetShader("basic").SetUniformMat4f("u_MVP", m_Levels[GetActiveLevel()].GetMVP());
             renderer.Draw(va, ib, GetShader("basic"));
-        }
-        {   // Render player
-            GetShader("basic").Bind();
-            m_Textures[m_Player.GetTex()].Bind();
-            GetShader("basic").SetUniformMat4f("u_MVP", m_Player.GetMVP());
-            renderer.Draw(va, ib, GetShader("basic"));
-        }
 
-        {   // Render Enemies
-            for (int i = 0; i < m_RowsEnemiesCount; i++) {
-                for (int j = 0; j < m_ColsEnemiesCount; j++) {
-                    GetShader("basic").Bind();
-                    unsigned int location = m_ColsEnemiesCount * i + j;
-                    m_Textures[m_Enemies[location].GetTex()].Bind();
-                    GetShader("basic").SetUniformMat4f("u_MVP", m_Enemies[location].GetMVP());
-                    renderer.Draw(va, ib, GetShader("basic"));
-                }
+            m_Player.Transform(glm::vec2(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y),
+                               glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
+            m_Player.SetLifeState(LifeState::ALIVE);
+        } else if (Game::State == GameState::GAME_ACTIVE) {
+            {   // Render background
+                GetShader("basic").Bind();
+                BindActiveLevelTexture();
+                renderer.Draw(va, ib, GetShader("basic"));
             }
-        }
+            {   // Render player
+                GetShader("basic").Bind();
+                m_Textures[m_Player.GetTex()].Bind();
+                GetShader("basic").SetUniformMat4f("u_MVP", m_Player.GetMVP());
+                renderer.Draw(va, ib, GetShader("basic"));
+            }
 
-        {   // Render Missiles
-            {
-                // Render Player's' Missiles
-                for (int i = 0; i < Game::PlayerMissiles.size(); i++) {
-                    GetShader("basic").Bind();
-                    m_Textures[Game::PlayerMissiles[i].GetTex()].Bind();
-                    GetShader("basic").SetUniformMat4f("u_MVP", Game::PlayerMissiles[i].GetMVP());
-                    renderer.Draw(va, ib, GetShader("basic"));
-                }
-
-                // Render Enemy's Missiles
-                for (int i = 0; i < Game::EnemyMissiles.size(); i++) {
-                    GetShader("basic").Bind();
-                    m_Textures[Game::EnemyMissiles[i].GetTex()].Bind();
-                    GetShader("basic").SetUniformMat4f("u_MVP", Game::EnemyMissiles[i].GetMVP());
-                    renderer.Draw(va, ib, GetShader("basic"));
+            {   // Render Enemies
+                for (int i = 0; i < m_RowsEnemiesCount; i++) {
+                    for (int j = 0; j < m_ColsEnemiesCount; j++) {
+                        GetShader("basic").Bind();
+                        unsigned int location = m_ColsEnemiesCount * i + j;
+                        m_Textures[m_Enemies[location].GetTex()].Bind();
+                        GetShader("basic").SetUniformMat4f("u_MVP", m_Enemies[location].GetMVP());
+                        renderer.Draw(va, ib, GetShader("basic"));
+                    }
                 }
             }
 
+            {   // Render Missiles
+                {
+                    // Render Player's' Missiles
+                    for (int i = 0; i < Game::PlayerMissiles.size(); i++) {
+                        GetShader("basic").Bind();
+                        m_Textures[Game::PlayerMissiles[i].GetTex()].Bind();
+                        GetShader("basic").SetUniformMat4f("u_MVP", Game::PlayerMissiles[i].GetMVP());
+                        renderer.Draw(va, ib, GetShader("basic"));
+                    }
+
+                    // Render Enemy's Missiles
+                    for (int i = 0; i < Game::EnemyMissiles.size(); i++) {
+                        GetShader("basic").Bind();
+                        m_Textures[Game::EnemyMissiles[i].GetTex()].Bind();
+                        GetShader("basic").SetUniformMat4f("u_MVP", Game::EnemyMissiles[i].GetMVP());
+                        renderer.Draw(va, ib, GetShader("basic"));
+                    }
+                }
+            }
+        } else if(Game::State == GameState::GAME_WON) {
+            logthis("Game", "Won");
+        } else if(Game::State == GameState::GAME_OVER) {
+            GetShader("basic").Bind();
+            m_Textures["game-over-screen"].Bind();
+            GetShader("basic").SetUniformMat4f("u_MVP", m_Levels[GetActiveLevel()].GetMVP());
+            renderer.Draw(va, ib, GetShader("basic"));
+            m_Player.SetNumberOfLives(PLAYER_INITIAL_NUMBER_OF_LIVES);
+            m_ActiveLevel = 1;
         }
 
         glfwSetWindowUserPointer(window, &m_Player);
@@ -184,6 +207,9 @@ void Game::KeyCallback(GLFWwindow *window, int key, int scancode, int action, in
     if (player) {
         if (action == GLFW_PRESS || action == GLFW_REPEAT) {
             switch (key) {
+                case GLFW_KEY_S :
+                    (Game::State == GameState::GAME_START) ? SetState(GameState::GAME_ACTIVE) :
+                                                             SetState(GameState::GAME_START);
                 case GLFW_KEY_LEFT :
                     player->Move(Movement::LEFT);
                     break;
@@ -191,7 +217,7 @@ void Game::KeyCallback(GLFWwindow *window, int key, int scancode, int action, in
                     player->Move(Movement::RIGHT);
                     break;
                 case GLFW_KEY_SPACE :
-                    if (player->GetGunState() == GunState::READY) {
+                    if (player->GetGunState() == GunState::READY && player->GetLifeState() == LifeState::ALIVE) {
                         Game::PlayerMissiles.emplace_back(player->MissileLaunch());
                         SoundEngine->play2D("res/audio/missile_launching.wav", GL_FALSE);
                         player->ResetGunState();
@@ -211,6 +237,19 @@ void Game::KeyCallback(GLFWwindow *window, int key, int scancode, int action, in
 // TODO: Refactor this function
 void Game::Update()
 {
+    if (m_Player.GetLifeState() == LifeState::DEAD) {
+        m_Player.SetTexture("explosion");
+        m_Player.ExplosionTimeReduce(0.1);
+    }
+
+    if (m_Player.GetExplosionTime() <= 0) {
+        m_Player.SetTexture("player");
+        m_Player.Transform(glm::vec2(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y),
+                           glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
+        m_Player.SetExplosionTime(1.0f);
+        m_Player.SetLifeState(LifeState::ALIVE);
+    }
+
     // Cool down the player's gun on each update if it's not already prepared for the next missile launch
     if (m_Player.GetGunState() != GunState::READY)
         m_Player.CoolGunDownBy(1);
@@ -236,9 +275,10 @@ void Game::Update()
                 Game::PlayerMissiles.erase(Game::PlayerMissiles.begin() + i);
                 SoundEngine->play2D("res/audio/blast.wav", GL_FALSE);
                 i--;
+                m_Player.AddScore(PLAYER_SCORE_FOR_KILL);
                 enemy.SetTexture("explosion");
                 enemy.ExplosionTimeReduce(0.1);
-                enemy.SetState(LifeState::DEAD);
+                enemy.SetLifeState(LifeState::DEAD);
                 break;
             }
         }
@@ -280,7 +320,9 @@ void Game::Update()
             // if the number of enemies decreases
             // TODO: This needs some adjusting
             float decreaseLimit = 5 * (1 / (m_Enemies.size() - deadEnemiesCount + 1));
-            if (enemy.GetGunState() == GunState::READY && launchProb[i] > ENEMY_LAUNCH_RATE_LIMIT - decreaseLimit) {
+            if (enemy.GetGunState() == GunState::READY && (launchProb[i] > ENEMY_LAUNCH_RATE_LIMIT - decreaseLimit) &&
+                Game::State == GameState::GAME_ACTIVE) {
+
                 Game::EnemyMissiles.emplace_back(enemy.MissileLaunch());
                 SoundEngine->play2D("res/audio/missile_launching.wav", GL_FALSE);
                 enemy.ResetGunState();
@@ -313,7 +355,11 @@ void Game::Update()
             SoundEngine->play2D("res/audio/blast.wav", GL_FALSE);
             m_Player.SetTexture("explosion");
             m_Player.ExplosionTimeReduce(0.1);
-            m_Player.SetState(LifeState::DEAD);
+            m_Player.SetLifeState(LifeState::DEAD);
+            m_Player.RemoveLives(1);
+            if (m_Player.GetNumberOfLives() <= 0) {
+                SetState(GameState::GAME_OVER);
+            }
             break;
         }
 
@@ -336,15 +382,23 @@ void Game::LoadGameObjects()
         LoadTexture("res/textures/enemy-type-" + std::to_string(i + 1) + ".png",
                     "enemy_" + std::to_string(i + 1), 0);
     LoadTexture("res/textures/missile.png", "missile", 0);
+    LoadTexture("res/textures/missile-enemy.png", "missile-enemy", 0);
     LoadTexture("res/textures/explosion.png", "explosion", 0);
+
+    LoadTexture("res/textures/welcome-screen.png", "welcome-screen", 0);
+    LoadTexture("res/textures/game-over-screen.png", "game-over-screen", 0);
 }
 
 void Game::LoadNextLevel()
 {
-    SetEnemies();
-    BindActiveLevelTexture();
-    m_Player.Transform(glm::vec2(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y),
-                       glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
+    if (m_ActiveLevel > m_Levels.size()) {
+        SetState(GameState::GAME_WON);
+    } else {
+        SetEnemies();
+        BindActiveLevelTexture();
+        m_Player.Transform(glm::vec2(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y),
+                           glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
+    }
 }
 
 void Game::LoadLevelsStructure()
@@ -369,12 +423,13 @@ void Game::LoadLevelsStructure()
 
 void Game::BindActiveLevelTexture()
 {
-    m_Textures["level-" + std::to_string(m_ActiveLevel)].Bind();
+    m_Textures["level-" + std::to_string(GetActiveLevel())].Bind();
     GetShader("basic").SetUniformMat4f("u_MVP", m_Levels[GetActiveLevel()].GetMVP());
 }
 
 void Game::SetEnemies()
 {
+    m_Enemies.clear();
     auto currentLevelEnemies = m_Levels[GetActiveLevel()].GetEnemies();
     m_RowsEnemiesCount = currentLevelEnemies.size();
     m_ColsEnemiesCount = currentLevelEnemies[0].size();
@@ -384,7 +439,7 @@ void Game::SetEnemies()
             m_Enemies.emplace_back(ENEMY_PADDING_X + j * ENEMY_RENDER_DISTANCE_X,
                                    Game::ScreenHeight - ENEMY_PADDING_Y - i * ENEMY_RENDER_DISTANCE_Y, 1,
                                    "enemy_" + std::to_string(currentLevelEnemies[i][j]),
-                                   "missile", 0,
+                                   "missile-enemy", 0,
                                    ENEMY_WIDTH, ENEMY_HEIGHT, 0.5f, 10.0f);
         }
     }
@@ -395,9 +450,9 @@ unsigned int Game::GetActiveLevel()
     return m_ActiveLevel - 1;
 }
 
-void Game::SetState(GameState &state)
+void Game::SetState(GameState state)
 {
-    m_State = state;
+    State = state;
 }
 
 void Game::AddShader(const Shader *shader, const std::string &name)
