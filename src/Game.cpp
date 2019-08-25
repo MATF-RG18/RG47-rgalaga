@@ -132,6 +132,8 @@ void Game::GameLoop()
             m_Player.Transform(glm::vec2(PLAYER_STARTING_POSITION_X, PLAYER_STARTING_POSITION_Y),
                                glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
             m_Player.SetLifeState(LifeState::ALIVE);
+            m_Player.SetNumberOfLives(PLAYER_INITIAL_NUMBER_OF_LIVES);
+            m_ActiveLevel = 1;
         } else if (Game::State == GameState::GAME_ACTIVE) {
             {   // Render background
                 GetShader("basic").Bind();
@@ -183,8 +185,6 @@ void Game::GameLoop()
             m_Textures["game-over-screen"].Bind();
             GetShader("basic").SetUniformMat4f("u_MVP", m_Levels[GetActiveLevel()].GetMVP());
             renderer.Draw(va, ib, GetShader("basic"));
-            m_Player.SetNumberOfLives(PLAYER_INITIAL_NUMBER_OF_LIVES);
-            m_ActiveLevel = 1;
         }
 
         glfwSetWindowUserPointer(window, &m_Player);
@@ -368,7 +368,7 @@ void Game::Update()
         i++;
     }
 
-    if (deadEnemiesCount == m_Enemies.size()) {
+    if (deadEnemiesCount == m_Enemies.size() && Game::State == GameState::GAME_ACTIVE) {
         m_ActiveLevel++;
         m_Enemies.clear();
         LoadNextLevel();
@@ -423,7 +423,7 @@ void Game::LoadLevelsStructure()
 
 void Game::BindActiveLevelTexture()
 {
-    m_Textures["level-" + std::to_string(GetActiveLevel())].Bind();
+    m_Textures["level-" + std::to_string(m_ActiveLevel)].Bind();
     GetShader("basic").SetUniformMat4f("u_MVP", m_Levels[GetActiveLevel()].GetMVP());
 }
 
