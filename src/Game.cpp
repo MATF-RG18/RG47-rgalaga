@@ -122,6 +122,7 @@ void Game::GameLoop()
 
         renderer.Clear();
         if (Game::State == GameState::GAME_START) {
+            m_ActiveLevel = 1;
             LoadNextLevel();
 
             GetShader("basic").Bind();
@@ -133,7 +134,6 @@ void Game::GameLoop()
                                glm::vec2(PLAYER_WIDTH, PLAYER_HEIGHT), PLAYER_STARTING_ANGLE);
             m_Player.SetLifeState(LifeState::ALIVE);
             m_Player.SetNumberOfLives(PLAYER_INITIAL_NUMBER_OF_LIVES);
-            m_ActiveLevel = 1;
         } else if (Game::State == GameState::GAME_ACTIVE) {
             {   // Render background
                 GetShader("basic").Bind();
@@ -179,7 +179,10 @@ void Game::GameLoop()
                 }
             }
         } else if(Game::State == GameState::GAME_WON) {
-            logthis("Game", "Won");
+            GetShader("basic").Bind();
+            m_Textures["game-won-screen"].Bind();
+            GetShader("basic").SetUniformMat4f("u_MVP", m_Levels[GetActiveLevel()].GetMVP());
+            renderer.Draw(va, ib, GetShader("basic"));
         } else if(Game::State == GameState::GAME_OVER) {
             GetShader("basic").Bind();
             m_Textures["game-over-screen"].Bind();
@@ -239,7 +242,7 @@ void Game::Update()
 {
     if (m_Player.GetLifeState() == LifeState::DEAD) {
         m_Player.SetTexture("explosion");
-        m_Player.ExplosionTimeReduce(0.1);
+        m_Player.ExplosionTimeReduce(0.1f);
     }
 
     if (m_Player.GetExplosionTime() <= 0) {
@@ -277,7 +280,7 @@ void Game::Update()
                 i--;
                 m_Player.AddScore(PLAYER_SCORE_FOR_KILL);
                 enemy.SetTexture("explosion");
-                enemy.ExplosionTimeReduce(0.1);
+                enemy.ExplosionTimeReduce(0.2f);
                 enemy.SetLifeState(LifeState::DEAD);
                 break;
             }
@@ -387,11 +390,12 @@ void Game::LoadGameObjects()
 
     LoadTexture("res/textures/welcome-screen.png", "welcome-screen", 0);
     LoadTexture("res/textures/game-over-screen.png", "game-over-screen", 0);
+    LoadTexture("res/textures/end-game-screen.png", "game-won-screen", 0);
 }
 
 void Game::LoadNextLevel()
 {
-    if (m_ActiveLevel > m_Levels.size()) {
+    if (m_ActiveLevel >= m_Levels.size()) {
         SetState(GameState::GAME_WON);
     } else {
         SetEnemies();

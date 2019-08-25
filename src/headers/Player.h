@@ -20,13 +20,14 @@ class Player
 
         void Move(Movement direction) override;
         Missile MissileLaunch();
-        void AddScore(int score)            { m_Score += score; }
-        void AddLives(short int amount)     { m_NumberOfLives += amount; }
-        void RemoveLives(short int amount)  { m_NumberOfLives -= amount; }
-        short int GetNumberOfLives() const  { return m_NumberOfLives; }
+        inline void AddScore(int score)            { m_Score += score; }
+        inline void AddLives(short int amount)     { m_NumberOfLives += amount; }
+        inline void RemoveLives(short int amount)  { m_NumberOfLives -= amount; }
 
+        inline short int GetNumberOfLives() const  { return m_NumberOfLives; }
+        inline int GetScore() const                { return m_Score; }
 
-        void SetNumberOfLives(short int n)  { m_NumberOfLives = n; }
+        inline void SetNumberOfLives(short int n)  { m_NumberOfLives = n; }
 
-        inline void AnnulateVelocity()      { m_Velocity = 0.0f; }
+        inline void AnnulateVelocity()             { m_Velocity = 0.0f; }
 };
