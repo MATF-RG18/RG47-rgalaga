@@ -30,8 +30,14 @@ set(CMAKE_TARGET_DEFINITIONS_C
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "include"
+  "dependencies/glfw-3.3/include"
+  "dependencies/glew-2.1.0/include"
+  "src/headers"
   "src"
+  "src/vendor"
+  "src/vendor/IrrKlang/include"
+  "src/vendor/IrrKlang"
+  "dependencies/glfw-3.3/src"
   )
 
 # Targets to which this target links.

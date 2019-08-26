@@ -6,17 +6,17 @@ C_FLAGS = -fPIC   -Wall
 
 C_DEFINES = -D_GLFW_USE_CONFIG_H
 
-C_INCLUDES = -I/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/include -I/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src 
+C_INCLUDES = -I/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/include -I/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/include -I/home/cane/Workspace/RG47-rgalaga/src/headers -I/home/cane/Workspace/RG47-rgalaga/src -I/home/cane/Workspace/RG47-rgalaga/src/vendor -I/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang/include -I/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang -I/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src 
 
-# Custom flags: src/CMakeFiles/glfw.dir/context.c.o_FLAGS = -Wdeclaration-after-statement
+# Custom flags: dependencies/glfw-3.3/src/CMakeFiles/glfw.dir/context.c.o_FLAGS = -Wdeclaration-after-statement
 
-# Custom flags: src/CMakeFiles/glfw.dir/init.c.o_FLAGS = -Wdeclaration-after-statement
+# Custom flags: dependencies/glfw-3.3/src/CMakeFiles/glfw.dir/init.c.o_FLAGS = -Wdeclaration-after-statement
 
-# Custom flags: src/CMakeFiles/glfw.dir/input.c.o_FLAGS = -Wdeclaration-after-statement
+# Custom flags: dependencies/glfw-3.3/src/CMakeFiles/glfw.dir/input.c.o_FLAGS = -Wdeclaration-after-statement
 
-# Custom flags: src/CMakeFiles/glfw.dir/monitor.c.o_FLAGS = -Wdeclaration-after-statement
+# Custom flags: dependencies/glfw-3.3/src/CMakeFiles/glfw.dir/monitor.c.o_FLAGS = -Wdeclaration-after-statement
 
-# Custom flags: src/CMakeFiles/glfw.dir/vulkan.c.o_FLAGS = -Wdeclaration-after-statement
+# Custom flags: dependencies/glfw-3.3/src/CMakeFiles/glfw.dir/vulkan.c.o_FLAGS = -Wdeclaration-after-statement
 
-# Custom flags: src/CMakeFiles/glfw.dir/window.c.o_FLAGS = -Wdeclaration-after-statement
+# Custom flags: dependencies/glfw-3.3/src/CMakeFiles/glfw.dir/window.c.o_FLAGS = -Wdeclaration-after-statement
 

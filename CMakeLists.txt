@@ -2,12 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 project(RGalaga)
 
-set (CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 
 # IrrKlang
-find_library(IRRKLANG_LIBRARY
-        NAMES IrrKlang
-        PATHS "${PROJECT_SOURCE_DIR}/src/vendor/IrrKlang/bin/linux-gcc-64")
+set(IRRKLANG_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}/src/vendor/IrrKlang/bin/linux-gcc-64/libIrrKlang.so")
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/dependencies/glfw-3.3/include
@@ -48,15 +46,11 @@ find_package(OpenGL REQUIRED)
 
 # GLFW
 add_subdirectory(${PROJECT_SOURCE_DIR}/dependencies/glfw-3.3)
-#target_link_libraries(RGalaga glfw)
 
 # GLEW
 add_subdirectory(${PROJECT_SOURCE_DIR}/dependencies/glew-2.1.0/build/cmake)
-#target_link_libraries(RGalaga glew)
 
 # GLM
 add_subdirectory(${PROJECT_SOURCE_DIR}/dependencies/glm-0.9.9.5)
-#target_link_libraries(RGalaga glm)
 
 target_link_libraries(RGalaga ${IRRKLANG_LIBRARY} glfw glew glm)
-

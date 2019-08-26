@@ -421,8 +421,9 @@ void Game::LoadLevelsStructure()
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < m_Levels.size(); i++)
+    for (int i = 0; i < m_Levels.size(); i++) {
         LoadTexture(m_Levels[i].GetBackgroundPath(), "level-" + std::to_string(i + 1), 0);
+    }
 }
 
 void Game::BindActiveLevelTexture()

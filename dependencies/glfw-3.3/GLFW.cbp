@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="GLFW"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\dependencies\;CMake Files\dependencies\glfw-3.3\;CMake Files\dependencies\glfw-3.3\src\;CMake Files\dependencies\glew-2.1.0\;CMake Files\dependencies\glew-2.1.0\build\;CMake Files\dependencies\glew-2.1.0\build\cmake\;CMake Files\dependencies\glm-0.9.9.5\;CMake Files\dependencies\glm-0.9.9.5\cmake\;CMake Files\dependencies\glm-0.9.9.5\glm\;CMake Files\dependencies\glm-0.9.9.5\test\;CMake Files\dependencies\glm-0.9.9.5\test\bug\;CMake Files\dependencies\glm-0.9.9.5\test\core\;CMake Files\dependencies\glm-0.9.9.5\test\ext\;CMake Files\dependencies\glm-0.9.9.5\test\gtc\;CMake Files\dependencies\glm-0.9.9.5\test\gtx\;CMake Files\dependencies\glm-0.9.9.5\test\perf\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="uninstall">
+				<Option working_dir="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 uninstall"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw">
+				<Option output="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GLFW_USE_CONFIG_H"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/include"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/include"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/headers"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/vendor"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang/include"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 glfw"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glfw/fast">
+				<Option output="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/libglfw3.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_GLFW_USE_CONFIG_H"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/include"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/include"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/headers"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/vendor"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang/include"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/src/vendor/IrrKlang"/>
+					<Add directory="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 glfw/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/include/GLFW/glfw3.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/include/GLFW/glfw3native.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/egl_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/egl_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/glfw_config.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/glx_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/glx_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/input.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/internal.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/linux_joystick.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/linux_joystick.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/mappings.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/osmesa_context.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/osmesa_context.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/posix_thread.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/posix_thread.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/posix_time.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/posix_time.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/vulkan.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/x11_init.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/x11_monitor.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/x11_platform.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/x11_window.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/xkb_unicode.c">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/xkb_unicode.h">
+			<Option target="glfw"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glfw-3.3\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/cmake_uninstall.cmake.in">
+			<Option virtualFolder="CMake Files\dependencies\glfw-3.3\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glfw-3.3\src\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/glfw3.pc.in">
+			<Option virtualFolder="CMake Files\dependencies\glfw-3.3\src\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/glfw3Config.cmake.in">
+			<Option virtualFolder="CMake Files\dependencies\glfw-3.3\src\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/src/glfw_config.h.in">
+			<Option virtualFolder="CMake Files\dependencies\glfw-3.3\src\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/glew.pc.in">
+			<Option virtualFolder="CMake Files\dependencies\glew-2.1.0\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glew-2.1.0/build/cmake/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glew-2.1.0\build\cmake\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/cmake/CMakePackageConfigHelpers.cmake">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\cmake\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/cmake/GNUInstallDirs.cmake">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\cmake\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/cmake/glm.pc.in">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\cmake\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/cmake/glmBuildConfig.cmake.in">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\cmake\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/cmake/glmConfig.cmake.in">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\cmake\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/glm/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\glm\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/bug/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\bug\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/core/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\core\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/ext/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\ext\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/gtc/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\gtc\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/gtx/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\gtx\"/>
+		</Unit>
+		<Unit filename="/home/cane/Workspace/RG47-rgalaga/dependencies/glm-0.9.9.5/test/perf/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\dependencies\glm-0.9.9.5\test\perf\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

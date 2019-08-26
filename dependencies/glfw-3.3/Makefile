@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3
+CMAKE_SOURCE_DIR = /home/cane/Workspace/RG47-rgalaga
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3
+CMAKE_BINARY_DIR = /home/cane/Workspace/RG47-rgalaga
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -124,14 +124,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/CMakeFiles /home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/CMakeFiles/progress.marks
-	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/CMakeFiles 0
+	cd /home/cane/Workspace/RG47-rgalaga && $(CMAKE_COMMAND) -E cmake_progress_start /home/cane/Workspace/RG47-rgalaga/CMakeFiles /home/cane/Workspace/RG47-rgalaga/dependencies/glfw-3.3/CMakeFiles/progress.marks
+	cd /home/cane/Workspace/RG47-rgalaga && $(MAKE) -f CMakeFiles/Makefile2 dependencies/glfw-3.3/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/cane/Workspace/RG47-rgalaga/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	$(MAKE) -f CMakeFiles/Makefile2 clean
+	cd /home/cane/Workspace/RG47-rgalaga && $(MAKE) -f CMakeFiles/Makefile2 dependencies/glfw-3.3/clean
 .PHONY : clean
 
 # The main clean target
@@ -141,421 +141,33 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/cane/Workspace/RG47-rgalaga && $(MAKE) -f CMakeFiles/Makefile2 dependencies/glfw-3.3/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	$(MAKE) -f CMakeFiles/Makefile2 preinstall
+	cd /home/cane/Workspace/RG47-rgalaga && $(MAKE) -f CMakeFiles/Makefile2 dependencies/glfw-3.3/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/cane/Workspace/RG47-rgalaga && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-#=============================================================================
-# Target rules for targets named uninstall
+# Convenience name for target.
+dependencies/glfw-3.3/CMakeFiles/uninstall.dir/rule:
+	cd /home/cane/Workspace/RG47-rgalaga && $(MAKE) -f CMakeFiles/Makefile2 dependencies/glfw-3.3/CMakeFiles/uninstall.dir/rule
+.PHONY : dependencies/glfw-3.3/CMakeFiles/uninstall.dir/rule
 
-# Build rule for target.
-uninstall: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 uninstall
+# Convenience name for target.
+uninstall: dependencies/glfw-3.3/CMakeFiles/uninstall.dir/rule
+
 .PHONY : uninstall
 
 # fast build rule for target.
 uninstall/fast:
-	$(MAKE) -f CMakeFiles/uninstall.dir/build.make CMakeFiles/uninstall.dir/build
+	cd /home/cane/Workspace/RG47-rgalaga && $(MAKE) -f dependencies/glfw-3.3/CMakeFiles/uninstall.dir/build.make dependencies/glfw-3.3/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
-
-#=============================================================================
-# Target rules for targets named glfw
-
-# Build rule for target.
-glfw: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 glfw
-.PHONY : glfw
-
-# fast build rule for target.
-glfw/fast:
-	$(MAKE) -f src/CMakeFiles/glfw.dir/build.make src/CMakeFiles/glfw.dir/build
-.PHONY : glfw/fast
-
-#=============================================================================
-# Target rules for targets named heightmap
-
-# Build rule for target.
-heightmap: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 heightmap
-.PHONY : heightmap
-
-# fast build rule for target.
-heightmap/fast:
-	$(MAKE) -f examples/CMakeFiles/heightmap.dir/build.make examples/CMakeFiles/heightmap.dir/build
-.PHONY : heightmap/fast
-
-#=============================================================================
-# Target rules for targets named gears
-
-# Build rule for target.
-gears: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 gears
-.PHONY : gears
-
-# fast build rule for target.
-gears/fast:
-	$(MAKE) -f examples/CMakeFiles/gears.dir/build.make examples/CMakeFiles/gears.dir/build
-.PHONY : gears/fast
-
-#=============================================================================
-# Target rules for targets named boing
-
-# Build rule for target.
-boing: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 boing
-.PHONY : boing
-
-# fast build rule for target.
-boing/fast:
-	$(MAKE) -f examples/CMakeFiles/boing.dir/build.make examples/CMakeFiles/boing.dir/build
-.PHONY : boing/fast
-
-#=============================================================================
-# Target rules for targets named offscreen
-
-# Build rule for target.
-offscreen: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 offscreen
-.PHONY : offscreen
-
-# fast build rule for target.
-offscreen/fast:
-	$(MAKE) -f examples/CMakeFiles/offscreen.dir/build.make examples/CMakeFiles/offscreen.dir/build
-.PHONY : offscreen/fast
-
-#=============================================================================
-# Target rules for targets named particles
-
-# Build rule for target.
-particles: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 particles
-.PHONY : particles
-
-# fast build rule for target.
-particles/fast:
-	$(MAKE) -f examples/CMakeFiles/particles.dir/build.make examples/CMakeFiles/particles.dir/build
-.PHONY : particles/fast
-
-#=============================================================================
-# Target rules for targets named wave
-
-# Build rule for target.
-wave: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 wave
-.PHONY : wave
-
-# fast build rule for target.
-wave/fast:
-	$(MAKE) -f examples/CMakeFiles/wave.dir/build.make examples/CMakeFiles/wave.dir/build
-.PHONY : wave/fast
-
-#=============================================================================
-# Target rules for targets named sharing
-
-# Build rule for target.
-sharing: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sharing
-.PHONY : sharing
-
-# fast build rule for target.
-sharing/fast:
-	$(MAKE) -f examples/CMakeFiles/sharing.dir/build.make examples/CMakeFiles/sharing.dir/build
-.PHONY : sharing/fast
-
-#=============================================================================
-# Target rules for targets named simple
-
-# Build rule for target.
-simple: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 simple
-.PHONY : simple
-
-# fast build rule for target.
-simple/fast:
-	$(MAKE) -f examples/CMakeFiles/simple.dir/build.make examples/CMakeFiles/simple.dir/build
-.PHONY : simple/fast
-
-#=============================================================================
-# Target rules for targets named splitview
-
-# Build rule for target.
-splitview: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 splitview
-.PHONY : splitview
-
-# fast build rule for target.
-splitview/fast:
-	$(MAKE) -f examples/CMakeFiles/splitview.dir/build.make examples/CMakeFiles/splitview.dir/build
-.PHONY : splitview/fast
-
-#=============================================================================
-# Target rules for targets named reopen
-
-# Build rule for target.
-reopen: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 reopen
-.PHONY : reopen
-
-# fast build rule for target.
-reopen/fast:
-	$(MAKE) -f tests/CMakeFiles/reopen.dir/build.make tests/CMakeFiles/reopen.dir/build
-.PHONY : reopen/fast
-
-#=============================================================================
-# Target rules for targets named vulkan
-
-# Build rule for target.
-vulkan: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 vulkan
-.PHONY : vulkan
-
-# fast build rule for target.
-vulkan/fast:
-	$(MAKE) -f tests/CMakeFiles/vulkan.dir/build.make tests/CMakeFiles/vulkan.dir/build
-.PHONY : vulkan/fast
-
-#=============================================================================
-# Target rules for targets named inputlag
-
-# Build rule for target.
-inputlag: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 inputlag
-.PHONY : inputlag
-
-# fast build rule for target.
-inputlag/fast:
-	$(MAKE) -f tests/CMakeFiles/inputlag.dir/build.make tests/CMakeFiles/inputlag.dir/build
-.PHONY : inputlag/fast
-
-#=============================================================================
-# Target rules for targets named monitors
-
-# Build rule for target.
-monitors: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 monitors
-.PHONY : monitors
-
-# fast build rule for target.
-monitors/fast:
-	$(MAKE) -f tests/CMakeFiles/monitors.dir/build.make tests/CMakeFiles/monitors.dir/build
-.PHONY : monitors/fast
-
-#=============================================================================
-# Target rules for targets named iconify
-
-# Build rule for target.
-iconify: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 iconify
-.PHONY : iconify
-
-# fast build rule for target.
-iconify/fast:
-	$(MAKE) -f tests/CMakeFiles/iconify.dir/build.make tests/CMakeFiles/iconify.dir/build
-.PHONY : iconify/fast
-
-#=============================================================================
-# Target rules for targets named gamma
-
-# Build rule for target.
-gamma: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 gamma
-.PHONY : gamma
-
-# fast build rule for target.
-gamma/fast:
-	$(MAKE) -f tests/CMakeFiles/gamma.dir/build.make tests/CMakeFiles/gamma.dir/build
-.PHONY : gamma/fast
-
-#=============================================================================
-# Target rules for targets named icon
-
-# Build rule for target.
-icon: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 icon
-.PHONY : icon
-
-# fast build rule for target.
-icon/fast:
-	$(MAKE) -f tests/CMakeFiles/icon.dir/build.make tests/CMakeFiles/icon.dir/build
-.PHONY : icon/fast
-
-#=============================================================================
-# Target rules for targets named tearing
-
-# Build rule for target.
-tearing: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 tearing
-.PHONY : tearing
-
-# fast build rule for target.
-tearing/fast:
-	$(MAKE) -f tests/CMakeFiles/tearing.dir/build.make tests/CMakeFiles/tearing.dir/build
-.PHONY : tearing/fast
-
-#=============================================================================
-# Target rules for targets named empty
-
-# Build rule for target.
-empty: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 empty
-.PHONY : empty
-
-# fast build rule for target.
-empty/fast:
-	$(MAKE) -f tests/CMakeFiles/empty.dir/build.make tests/CMakeFiles/empty.dir/build
-.PHONY : empty/fast
-
-#=============================================================================
-# Target rules for targets named cursor
-
-# Build rule for target.
-cursor: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 cursor
-.PHONY : cursor
-
-# fast build rule for target.
-cursor/fast:
-	$(MAKE) -f tests/CMakeFiles/cursor.dir/build.make tests/CMakeFiles/cursor.dir/build
-.PHONY : cursor/fast
-
-#=============================================================================
-# Target rules for targets named threads
-
-# Build rule for target.
-threads: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 threads
-.PHONY : threads
-
-# fast build rule for target.
-threads/fast:
-	$(MAKE) -f tests/CMakeFiles/threads.dir/build.make tests/CMakeFiles/threads.dir/build
-.PHONY : threads/fast
-
-#=============================================================================
-# Target rules for targets named clipboard
-
-# Build rule for target.
-clipboard: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clipboard
-.PHONY : clipboard
-
-# fast build rule for target.
-clipboard/fast:
-	$(MAKE) -f tests/CMakeFiles/clipboard.dir/build.make tests/CMakeFiles/clipboard.dir/build
-.PHONY : clipboard/fast
-
-#=============================================================================
-# Target rules for targets named title
-
-# Build rule for target.
-title: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 title
-.PHONY : title
-
-# fast build rule for target.
-title/fast:
-	$(MAKE) -f tests/CMakeFiles/title.dir/build.make tests/CMakeFiles/title.dir/build
-.PHONY : title/fast
-
-#=============================================================================
-# Target rules for targets named glfwinfo
-
-# Build rule for target.
-glfwinfo: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 glfwinfo
-.PHONY : glfwinfo
-
-# fast build rule for target.
-glfwinfo/fast:
-	$(MAKE) -f tests/CMakeFiles/glfwinfo.dir/build.make tests/CMakeFiles/glfwinfo.dir/build
-.PHONY : glfwinfo/fast
-
-#=============================================================================
-# Target rules for targets named joysticks
-
-# Build rule for target.
-joysticks: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 joysticks
-.PHONY : joysticks
-
-# fast build rule for target.
-joysticks/fast:
-	$(MAKE) -f tests/CMakeFiles/joysticks.dir/build.make tests/CMakeFiles/joysticks.dir/build
-.PHONY : joysticks/fast
-
-#=============================================================================
-# Target rules for targets named opacity
-
-# Build rule for target.
-opacity: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 opacity
-.PHONY : opacity
-
-# fast build rule for target.
-opacity/fast:
-	$(MAKE) -f tests/CMakeFiles/opacity.dir/build.make tests/CMakeFiles/opacity.dir/build
-.PHONY : opacity/fast
-
-#=============================================================================
-# Target rules for targets named windows
-
-# Build rule for target.
-windows: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 windows
-.PHONY : windows
-
-# fast build rule for target.
-windows/fast:
-	$(MAKE) -f tests/CMakeFiles/windows.dir/build.make tests/CMakeFiles/windows.dir/build
-.PHONY : windows/fast
-
-#=============================================================================
-# Target rules for targets named timeout
-
-# Build rule for target.
-timeout: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 timeout
-.PHONY : timeout
-
-# fast build rule for target.
-timeout/fast:
-	$(MAKE) -f tests/CMakeFiles/timeout.dir/build.make tests/CMakeFiles/timeout.dir/build
-.PHONY : timeout/fast
-
-#=============================================================================
-# Target rules for targets named events
-
-# Build rule for target.
-events: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 events
-.PHONY : events
-
-# fast build rule for target.
-events/fast:
-	$(MAKE) -f tests/CMakeFiles/events.dir/build.make tests/CMakeFiles/events.dir/build
-.PHONY : events/fast
-
-#=============================================================================
-# Target rules for targets named msaa
-
-# Build rule for target.
-msaa: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 msaa
-.PHONY : msaa
-
-# fast build rule for target.
-msaa/fast:
-	$(MAKE) -f tests/CMakeFiles/msaa.dir/build.make tests/CMakeFiles/msaa.dir/build
-.PHONY : msaa/fast
 
 # Help Target
 help:
@@ -570,36 +182,6 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... edit_cache"
-	@echo "... glfw"
-	@echo "... heightmap"
-	@echo "... gears"
-	@echo "... boing"
-	@echo "... offscreen"
-	@echo "... particles"
-	@echo "... wave"
-	@echo "... sharing"
-	@echo "... simple"
-	@echo "... splitview"
-	@echo "... reopen"
-	@echo "... vulkan"
-	@echo "... inputlag"
-	@echo "... monitors"
-	@echo "... iconify"
-	@echo "... gamma"
-	@echo "... icon"
-	@echo "... tearing"
-	@echo "... empty"
-	@echo "... cursor"
-	@echo "... threads"
-	@echo "... clipboard"
-	@echo "... title"
-	@echo "... glfwinfo"
-	@echo "... joysticks"
-	@echo "... opacity"
-	@echo "... windows"
-	@echo "... timeout"
-	@echo "... events"
-	@echo "... msaa"
 .PHONY : help
 
 
@@ -611,6 +193,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	$(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/cane/Workspace/RG47-rgalaga && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
